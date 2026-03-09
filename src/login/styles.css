@@ -54,6 +54,14 @@ body {
   text-decoration: underline;
 }
 
+#erro {
+  color: #ff4d4d;
+  text-align: center;
+  font-size: 14px;
+  min-height: 20px;
+  transition: all 0.3s ease;
+}
+
 input {
   padding: 12px;
   border-radius: 8px;
