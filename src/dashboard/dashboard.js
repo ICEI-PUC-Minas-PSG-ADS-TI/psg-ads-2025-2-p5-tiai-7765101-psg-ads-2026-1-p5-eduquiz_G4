@@ -1,16 +1,24 @@
 import { auth } from "../db/firebase.js";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("Usuário logado:", user.email);
-  } else {
-    window.location.href = "../login/login.html";
-  }
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                window.location.href = "../login/login.html";
+            } catch (error) {
+                console.error("Erro ao fazer logout:", error);
+            }
+        });
+    }
 });
 
-window.logout = function () {
-  signOut(auth).then(() => {
-    window.location.href = "../login/login.html";
-  });
-};
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "../login/login.html";
+    } else {
+        console.log("Usuário logado:", user.email);
+    }
+});

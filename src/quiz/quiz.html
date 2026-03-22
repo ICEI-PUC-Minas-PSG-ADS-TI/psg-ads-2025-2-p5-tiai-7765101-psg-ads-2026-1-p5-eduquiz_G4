@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuiz – Questão</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="subject-pill" id="subjectPill">
+      <span id="pillEmoji">📚</span>
+      <span id="pillNome">…</span>
+      <span class="pill-sep">·</span>
+      <span id="pillTopico" class="pill-topico">…</span>
+    </div>
+    <div class="score-box">
+      <span class="score-lbl">Pontos</span>
+      <span class="score-val" id="scoreVal">0</span>
+    </div>
+  </header>
+
+  <!-- PROGRESSO -->
+  <div class="prog-wrapper">
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <span class="prog-txt" id="progTxt">0 / 5</span>
+  </div>
+
+  <!-- TELA: CARREGANDO -->
+  <div class="screen" id="screenLoading">
+    <div class="loading-orb"></div>
+    <p class="load-title" id="loadTitle">Gemini está criando sua questão…</p>
+    <p class="load-sub" id="loadSub">Preparando um desafio personalizado</p>
+  </div>
+
+  <!-- TELA: QUESTÃO -->
+  <div class="screen hidden" id="screenQuestion">
+    <div class="q-card">
+      <div class="q-meta">
+        <span id="qNum">Questão 1 de 5</span>
+        <span class="diff-badge" id="qDiff">Médio</span>
+      </div>
+      <p class="q-text" id="qText"></p>
+    </div>
+    <div class="options" id="optionsWrap"></div>
+  </div>
+
+  <!-- TELA: FEEDBACK -->
+  <div class="screen hidden" id="screenFeedback">
+    <div class="fb-card" id="fbCard">
+      <div class="fb-icon" id="fbIcon">✓</div>
+      <h2 class="fb-title" id="fbTitle">Correto!</h2>
+      <p class="fb-explain" id="fbExplain"></p>
+    </div>
+    <button class="btn-next" id="btnNext">
+      Próxima questão
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- TELA: RESULTADO -->
+  <div class="screen hidden" id="screenResult">
+    <div class="result-card">
+      <div class="result-emoji" id="resEmoji">🏆</div>
+      <h2 class="result-title">Lição concluída!</h2>
+      <p class="result-sub" id="resSub">Você acertou 4 de 5 questões</p>
+      <div class="result-score" id="resScore">+400 pts</div>
+      <div class="result-actions">
+        <button class="btn-secondary" onclick="window.location.href='../licao/licao.html?' + retornoParams()">Ver lições</button>
+        <button class="btn-primary"   onclick="novaLicaoMesmoTopico()">Nova lição ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="quiz.js"></script>
+</body>
+</html>

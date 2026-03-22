@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
 </head>
-
 <body>
-
     <h1>Bem vindo ao EduLink 🎓</h1>
+    <button id="logoutBtn">Sair</button>
+       <a class="btn-explorar" href="../materias/materias.html">
+                🎮 Explorar Matérias
+            </a>
 
-    <button onclick="logout()">Sair</button>
+    <!-- Import map para resolver os pacotes do Firebase -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
+            }
+        }
+    </script>
 
     <script type="module" src="dashboard.js"></script>
-
 </body>
-
 </html>

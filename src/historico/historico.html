@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuiz – Histórico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="historico.css">
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="btn-back" onclick="history.back()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Voltar
+    </button>
+    <div class="topbar-center">
+      <span class="page-icon">📋</span>
+      <span class="page-title">Histórico</span>
+    </div>
+    <div class="user-chip">
+      <div class="avatar" id="avatar">?</div>
+      <span id="userEmail">…</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- RESUMO GERAL -->
+    <div class="summary-bar" id="summaryBar">
+      <div class="sum-card">
+        <span class="sum-val" id="sumLicoes">—</span>
+        <span class="sum-lbl">Lições concluídas</span>
+      </div>
+      <div class="sum-divider"></div>
+      <div class="sum-card">
+        <span class="sum-val accent" id="sumAcertos">—</span>
+        <span class="sum-lbl">Total de acertos</span>
+      </div>
+      <div class="sum-divider"></div>
+      <div class="sum-card">
+        <span class="sum-val" id="sumErros">—</span>
+        <span class="sum-lbl">Total de erros</span>
+      </div>
+      <div class="sum-divider"></div>
+      <div class="sum-card">
+        <span class="sum-val accent" id="sumPct">—</span>
+        <span class="sum-lbl">Taxa de acerto</span>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filters-row">
+      <div class="filter-group">
+        <button class="chip active" data-filter="all">Todas</button>
+        <button class="chip" data-filter="acerto">✓ Acertos</button>
+        <button class="chip" data-filter="erro">✗ Erros</button>
+      </div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar por matéria, tópico ou pergunta…">
+      </div>
+    </div>
+
+    <!-- LISTA DE LIÇÕES -->
+    <div id="licoesWrap">
+
+      <!-- Skeletons -->
+      <div id="skeletons">
+        <div class="skeleton-licao"></div>
+        <div class="skeleton-licao"></div>
+        <div class="skeleton-licao"></div>
+      </div>
+
+      <!-- Estado vazio -->
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">📭</div>
+        <h2>Nenhum histórico ainda</h2>
+        <p>Complete algumas lições para ver seu histórico aqui.</p>
+        <button class="btn-primary" onclick="window.location.href='../materias/materias.html'">
+          Estudar agora
+        </button>
+      </div>
+
+      <!-- Lista real -->
+      <div id="licoesList"></div>
+
+    </div>
+
+  </main>
+
+  <!-- MODAL DE REVISÃO DE LIÇÃO -->
+  <div class="modal-overlay hidden" id="modalRevisao">
+    <div class="modal">
+
+      <div class="modal-head">
+        <div class="modal-head-left">
+          <span class="modal-emoji" id="modalEmoji">📚</span>
+          <div>
+            <h2 id="modalTitulo">Revisão da lição</h2>
+            <p class="modal-sub" id="modalSub">Tópico · Data</p>
+          </div>
+        </div>
+        <button class="modal-close" id="btnFecharModal">✕</button>
+      </div>
+
+      <!-- Score resumo -->
+      <div class="modal-score" id="modalScore">
+        <div class="ms-item ok">
+          <span class="ms-val" id="msAcertos">0</span>
+          <span class="ms-lbl">Acertos</span>
+        </div>
+        <div class="ms-sep"></div>
+        <div class="ms-item err">
+          <span class="ms-val" id="msErros">0</span>
+          <span class="ms-lbl">Erros</span>
+        </div>
+        <div class="ms-sep"></div>
+        <div class="ms-item">
+          <span class="ms-val" id="msPct">0%</span>
+          <span class="ms-lbl">Aproveitamento</span>
+        </div>
+      </div>
+
+      <!-- Filtro interno do modal -->
+      <div class="modal-filter">
+        <button class="mf-btn active" data-mfilter="all">Todas</button>
+        <button class="mf-btn" data-mfilter="acerto">✓ Acertos</button>
+        <button class="mf-btn" data-mfilter="erro">✗ Erros</button>
+      </div>
+
+      <!-- Loading respostas -->
+      <div class="modal-loading hidden" id="modalLoading">
+        <div class="spin"></div>
+        <span>Carregando respostas…</span>
+      </div>
+
+      <!-- Lista de questões -->
+      <div class="questoes-list" id="questoesList"></div>
+
+    </div>
+  </div>
+
+  <script type="module" src="historico.js"></script>
+</body>
+</html>
