@@ -3,32 +3,47 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Criar Conta</title>
-
+    <title>EduQuiz - Criar Conta</title>
     <link rel="stylesheet" href="cadastro.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-    <div class="container">
+    <div class="main-wrapper">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Junte-se ao EduQuiz!</h1>
+                <p>Crie sua conta e comece a testar seus conhecimentos com nossa IA inteligente.</p>
+            </div>
+        </div>
 
-        <h1>Criar conta</h1>
+        <div class="register-section">
+            <div class="register-box">
+                <h2>CRIAR CONTA</h2>
 
-        <input type="email" id="email" placeholder="Seu email">
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
 
-        <input type="password" id="senha" placeholder="Sua senha">
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Crie uma senha forte" required>
+                </div>
 
-        <button onclick="cadastrar()">Cadastrar</button>
+                <button onclick="cadastrar()" class="btn-cadastrar">Cadastrar</button>
 
-        <p id="erro"></p>
+                <p id="erro"></p>
 
-        <a href="../login/login.html">Já tem conta? Fazer login</a>
-
+                <p class="login-text">
+                    Já tem uma conta? <a href="../login/login.html">Fazer login</a>
+                </p>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="cadastro.js"></script>
-
 </body>
 
 </html>

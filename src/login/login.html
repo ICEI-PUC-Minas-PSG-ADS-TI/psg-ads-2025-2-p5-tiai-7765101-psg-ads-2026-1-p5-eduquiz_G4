@@ -3,41 +3,53 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>EduLink Login</title>
+    <title>EduQuiz Login</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
-    <div class="container">
-
-        <div class="hero">
-            <h1>Onde o conhecimento ganha vida.</h1>
-            <p>Plataforma inteligente que utiliza IA para impulsionar seu sucesso escolar.</p>
+    <div class="main-wrapper">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Onde o conhecimento ganha vida.</h1>
+            </div>
         </div>
 
-        <div class="login-card">
+        <div class="login-section">
+            <div class="login-box">
+                <h2>LOGIN</h2>
 
-            <h2>Login</h2>
+                <div class="input-group">
+                    <label for="email">Usuário</label>
+                    <input type="email" id="email" placeholder="@mail.com" required>
+                </div>
 
-            <input type="email" id="email" placeholder="Seu email" required>
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="senha" required>
+                </div>
 
-            <input type="password" id="senha" placeholder="Sua senha" required>
+                <div class="utility-row">
+                    <label class="remember-me">
+                        <input type="checkbox"> Lembrar-me
+                    </label>
+                    <a href="#" onclick="esqueciSenha()" class="forgot-pass">Esqueceu a Senha?</a>
+                </div>
 
-            <button onclick="login()">Entrar</button>
+                <button onclick="login()" class="btn-entrar">Entrar</button>
 
-            <a class="criar-conta" href="../cadastro/cadastro.html">
-                Criar conta
-            </a>
+                <p class="signup-text">
+                    Não Tem Uma Conta? <a href="../cadastro/cadastro.html">Inscrever-se</a>
+                </p>
 
-            <p id="erro"></p>
-
+                <p id="erro"></p>
+            </div>
         </div>
-
     </div>
 
     <script type="module" src="login.js"></script>
-
 </body>
 
 </html>

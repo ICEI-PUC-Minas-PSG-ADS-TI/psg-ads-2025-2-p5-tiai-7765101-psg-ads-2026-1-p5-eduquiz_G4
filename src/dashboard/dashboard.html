@@ -1,19 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuiz – Dashboard</title>
+    <link rel="stylesheet" href="../utils/global.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-
 <body>
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="logo">🎓 Edu<span>Quiz</span></div>
+      <div class="topbar-right" style="display:flex; align-items:center; gap:10px;">
+        <button class="btn-theme" id="btnTheme" title="Alternar tema"></button>
+        <div class="user-chip">
+          <div class="avatar" id="avatar">?</div>
+          <span id="userEmail">…</span>
+        </div>
+        <button class="btn-logout" id="logoutBtn" style="border:none;background:rgba(255,255,255,0.2);padding:6px 14px;border-radius:20px;color:var(--text-on-grad);font-weight:700;cursor:pointer;">Sair</button>
+      </div>
+    </header>
 
-    <h1>Bem vindo ao EduLink 🎓</h1>
+    <!-- FUNDO ANIMADO (CSS PURO) -->
+    <div class="dash-bg-effect">
+      <div class="dash-orb dash-orb-1"></div>
+      <div class="dash-orb dash-orb-2"></div>
+      <div class="dash-orb dash-orb-3"></div>
+    </div>
 
-    <button onclick="logout()">Sair</button>
+    <!-- MAIN HUB -->
+    <main class="dash-main">
+      <div class="dash-hero">
+        <h1 id="dashWelcomeTitle">Bem-vindo, Estudante 🚀</h1>
+        <p>Pronto para continuar sua jornada de aprendizado hoje?</p>
+      </div>
+
+      <div class="dash-grid">
+        <!-- Widget 1: Progresso -->
+        <div class="dash-card">
+          <div class="dash-card-title">📈 Seu Progresso</div>
+          <div class="stat-row">
+            <span class="stat-label">Ofensiva (Fogo)</span>
+            <span class="stat-val" style="color: #f59e0b;"><span id="dashStreak">0</span> 🔥</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Total de XP</span>
+            <span class="stat-val" id="dashTotalXp">0</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Lições Concluídas</span>
+            <span class="stat-val" id="dashTotalLicoes" style="color: var(--success);">0</span>
+          </div>
+        </div>
+
+        <!-- Widget 2: Conquistas -->
+        <div class="dash-card">
+          <div class="dash-card-title">🎖️ Painel de Conquistas</div>
+          <div class="badge-gallery" id="dashBadgeGallery">
+            <div class="dash-badge empty">Carregando conquistadas...</div>
+          </div>
+        </div>
+
+        <!-- Widget 3: Acesso Rápido -->
+        <div class="dash-card">
+          <div class="dash-card-title">⚡ Acesso Rápido</div>
+          <div class="action-buttons">
+            <a class="btn-dash-action" href="../materias/materias.html">
+              🎮 Explorar Matérias
+            </a>
+            <a class="btn-dash-action gold" href="../ranking/ranking.html">
+              🏆 Ver Tabela de Ranking
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Import map para resolver os pacotes do Firebase -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
+            }
+        }
+    </script>
 
     <script type="module" src="dashboard.js"></script>
-
 </body>
-
 </html>

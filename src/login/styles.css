@@ -1,89 +1,152 @@
-body {
-  font-family: Arial;
+* {
+  box-sizing: border-box;
   margin: 0;
-  background: linear-gradient(135deg, #5f7cff, #7bd3ff);
+  padding: 0;
+}
+
+body {
+  font-family: "Arial", sans-serif;
   height: 100vh;
+  overflow: hidden;
+}
+
+.main-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- LADO ESQUERDO ATUALIZADO --- */
+.hero-section {
+  flex: 1;
+  background-image:
+    linear-gradient(rgba(95, 124, 255, 0.7), rgba(123, 211, 255, 0.7)),
+    url("../assets/img/login.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 40px;
+}
+
+.hero-content {
+  max-width: 450px;
+  z-index: 1;
+}
+
+.hero-section h1 {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.hero-section p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* --- LADO DIREITO --- */
+.login-section {
+  flex: 1;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.container {
-  width: 900px;
-  display: flex;
-  gap: 40px;
-  align-items: center;
+.login-box {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
 }
 
-.hero {
-  color: white;
-  width: 50%;
+.login-box h2 {
+  text-align: center;
+  font-size: 30px;
+  color: #444;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
 }
 
-.hero h1 {
-  font-size: 40px;
-}
-
-.hero p {
-  opacity: 0.9;
-}
-
-.login-card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  width: 320px;
+.input-group {
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
-.login-card h2 {
-  text-align: center;
-}
-
-.criar-conta {
-  text-align: center;
-  font-size: 14px;
-  color: #5f7cff;
-  text-decoration: none;
-}
-
-.criar-conta:hover {
-  text-decoration: underline;
-}
-
-#erro {
-  color: #ff4d4d;
-  text-align: center;
-  font-size: 14px;
-  min-height: 20px;
-  transition: all 0.3s ease;
+.input-group label {
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 8px;
 }
 
 input {
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   font-size: 16px;
+  background-color: #f9f9f9;
 }
 
-button {
+/* Linha do Checkbox e Esqueci Senha */
+.utility-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.remember-me {
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.forgot-pass {
+  color: #5f7cff;
+  text-decoration: none;
+}
+
+.btn-entrar {
+  width: 100%;
   background: #5f7cff;
   border: none;
-  padding: 12px;
+  padding: 14px;
   color: white;
   font-size: 16px;
+  font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
-button:hover {
+.btn-entrar:hover {
   background: #4e68e5;
 }
 
-#erro {
-  color: red;
+.signup-text {
   text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #444;
+}
+
+.signup-text a {
+  color: #5f7cff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#erro {
+  color: #ff4d4d;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
 }

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuiz — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-icon">⚡</span>
+      <div>
+        <p class="brand-title">EduQuiz</p>
+        <p class="brand-sub">Painel Admin</p>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-tab="materias">
+        <span class="nav-icon">📚</span> Matérias
+      </button>
+      <button class="nav-item" data-tab="questoes">
+        <span class="nav-icon">❓</span> Questões
+      </button>
+      <button class="nav-item" data-tab="stats">
+        <span class="nav-icon">📊</span> Estatísticas
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusLabel">Conectando…</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="content">
+
+    <!-- ── TAB: MATÉRIAS ────────────────────────────────────── -->
+    <section class="tab active" id="tab-materias">
+      <div class="tab-header">
+        <div>
+          <h1>Matérias</h1>
+          <p class="tab-desc">Gerencie o catálogo de matérias e seus tópicos</p>
+        </div>
+        <button class="btn-primary" id="btnNovaMateria">+ Nova matéria</button>
+      </div>
+
+      <div class="cards-grid" id="materiasGrid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: QUESTÕES ────────────────────────────────────── -->
+    <section class="tab" id="tab-questoes">
+      <div class="tab-header">
+        <div>
+          <h1>Questões</h1>
+          <p class="tab-desc">Banco global de questões geradas pela IA</p>
+        </div>
+        <button class="btn-primary" id="btnNovaQuestao">+ Nova questão</button>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filter-bar">
+        <select class="filter-select" id="filterMateria">
+          <option value="">Todas as matérias</option>
+        </select>
+        <select class="filter-select" id="filterTopico">
+          <option value="">Todos os tópicos</option>
+        </select>
+        <select class="filter-select" id="filterDiff">
+          <option value="">Qualquer dificuldade</option>
+          <option value="Fácil">Fácil</option>
+          <option value="Médio">Médio</option>
+          <option value="Difícil">Difícil</option>
+        </select>
+        <button class="btn-ghost" id="btnFiltrar">Filtrar</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="questoesTable">
+          <thead>
+            <tr>
+              <th>Pergunta</th>
+              <th>Matéria</th>
+              <th>Tópico</th>
+              <th>Nível</th>
+              <th>Dific.</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="questoesBody">
+            <tr><td colspan="6" class="loading-row">Carregando questões…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <!-- ── TAB: STATS ──────────────────────────────────────── -->
+    <section class="tab" id="tab-stats">
+      <div class="tab-header">
+        <div>
+          <h1>Estatísticas</h1>
+          <p class="tab-desc">Visão geral do banco de dados</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-icon">📚</span>
+          <span class="stat-val" id="statMaterias">—</span>
+          <span class="stat-lbl">Matérias</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🏷️</span>
+          <span class="stat-val" id="statTopicos">—</span>
+          <span class="stat-lbl">Tópicos totais</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">❓</span>
+          <span class="stat-val" id="statQuestoes">—</span>
+          <span class="stat-lbl">Questões</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🎓</span>
+          <span class="stat-val" id="statLicoes">—</span>
+          <span class="stat-lbl">Lições criadas</span>
+        </div>
+      </div>
+
+      <h2 class="section-h2">Questões por matéria</h2>
+      <div class="bar-chart" id="barChart"></div>
+
+      <h2 class="section-h2">Distribuição por dificuldade</h2>
+      <div class="diff-bars" id="diffBars"></div>
+    </section>
+
+  </div><!-- /content -->
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODAIS
+  ══════════════════════════════════════════════════════════════ -->
+
+  <!-- Modal matéria -->
+  <div class="modal-overlay hidden" id="modalMateria">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="modalMateriaTitle">Nova matéria</h2>
+        <button class="modal-close" data-close="modalMateria">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="field">
+            <label>ID (slug, sem espaços)</label>
+            <input type="text" id="mId" placeholder="ex: matematica">
+          </div>
+          <div class="field field-sm">
+            <label>Emoji</label>
+            <input type="text" id="mEmoji" placeholder="➗" maxlength="4">
+          </div>
+        </div>
+        <div class="field">
+          <label>Nome</label>
+          <input type="text" id="mNome" placeholder="ex: Matemática">
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Escolaridade</label>
+            <select id="mEscolaridade">
+              <option>Fundamental I</option>
+              <option>Fundamental II</option>
+              <option selected>Médio</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Nível (ano)</label>
+            <input type="text" id="mNivel" placeholder="ex: 6º Ano">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Cor (hex)</label>
+            <div class="color-row">
+              <input type="color" id="mCorPicker" value="#5f7cff">
+              <input type="text"  id="mCor" placeholder="#5f7cff" maxlength="7">
+            </div>
+          </div>
+          <div class="field">
+            <label>Filtro de nível</label>
+            <select id="mNivelFiltro">
+              <option value="fund1">fund1</option>
+              <option value="fund2" selected>fund2</option>
+              <option value="medio">medio</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tópicos <span class="hint">(um por linha)</span></label>
+          <textarea id="mTopicos" rows="6" placeholder="Interpretação de Texto&#10;Verbos&#10;Substantivos&#10;Geral"></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-ghost"    data-close="modalMateria">Cancelar</button>
+        <button class="btn-primary"  id="btnSalvarMateria">Salvar matéria</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal questão -->
+  <div class="modal-overlay hidden" id="modalQuestao">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <h2 id="modalQuestaoTitle">Nova questão</h2>
+        <button class="modal-close" data-close="modalQuestao">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="field">
+            <label>Matéria</label>
+            <select id="qMateria"></select>
+          </div>
+          <div class="field">
+            <label>Tópico</label>
+            <select id="qTopico"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Nível</label>
+            <input type="text" id="qNivel" placeholder="ex: 6º Ano">
+          </div>
+          <div class="field">
+            <label>Escolaridade</label>
+            <input type="text" id="qEscolaridade" placeholder="ex: Fundamental II">
+          </div>
+          <div class="field">
+            <label>Dificuldade</label>
+            <select id="qDiff">
+              <option>Fácil</option>
+              <option selected>Médio</option>
+              <option>Difícil</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Pergunta</label>
+          <textarea id="qPergunta" rows="3" placeholder="Qual é o sujeito da oração…?"></textarea>
+        </div>
+        <div class="field">
+          <label>Opções <span class="hint">(A, B, C, D — uma por linha)</span></label>
+          <textarea id="qOpcoes" rows="4" placeholder="A) Opção correta ou incorreta&#10;B) ...&#10;C) ...&#10;D) ..."></textarea>
+        </div>
+        <div class="field">
+          <label>Resposta correta <span class="hint">(índice 0–3)</span></label>
+          <div class="correta-row" id="corretaRow">
+            <button class="correta-btn active" data-idx="0">A</button>
+            <button class="correta-btn" data-idx="1">B</button>
+            <button class="correta-btn" data-idx="2">C</button>
+            <button class="correta-btn" data-idx="3">D</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Explicação</label>
+          <textarea id="qExplicacao" rows="3" placeholder="Explique por que a resposta é correta…"></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-ghost"   data-close="modalQuestao">Cancelar</button>
+        <button class="btn-primary" id="btnSalvarQuestao">Salvar questão</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal confirm delete -->
+  <div class="modal-overlay hidden" id="modalConfirm">
+    <div class="modal modal-sm">
+      <div class="modal-head">
+        <h2>Confirmar exclusão</h2>
+        <button class="modal-close" data-close="modalConfirm">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMsg" style="color:var(--muted);line-height:1.6">Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.</p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-ghost"   data-close="modalConfirm">Cancelar</button>
+        <button class="btn-danger"  id="btnConfirmDelete">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

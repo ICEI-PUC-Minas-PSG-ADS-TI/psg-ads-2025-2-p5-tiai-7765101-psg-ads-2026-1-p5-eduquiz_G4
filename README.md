@@ -1,25 +1,28 @@
 # TÍTULO DO PROJETO
 
-`CURSO`
+`ADS`
 
-`DISCIPLINA`
+`Tiai`
 
-`SEMESTRE`
+`Quinto`
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
 
-ODS Alinhados:
+O **EduQuiz** é um aplicativo educacional gamificado inspirado em plataformas de aprendizado interativas, que tem como objetivo auxiliar estudantes brasileiros no estudo de conteúdos escolares de forma dinâmica e motivadora. A aplicação abrangerá disciplinas presentes no currículo escolar do Brasil, desde o **1º ano do Ensino Fundamental até o Ensino Médio**, organizando os conteúdos por matérias e níveis de dificuldade.
+
+O diferencial do EduQuiz é o uso de **Inteligência Artificial para gerar perguntas automaticamente** e fornecer **explicações detalhadas quando o usuário errar uma questão**, ajudando no processo de aprendizagem. Além disso, o sistema utilizará elementos de **gamificação**, como progresso, níveis e recompensas, para aumentar o engajamento dos estudantes. O projeto também está alinhado com a **ODS 4 – Educação de Qualidade**, que busca promover acesso à educação inclusiva e de qualidade por meio da tecnologia.
+
+ODS Alinhados: ODS 4 - Educação de Qualidade
 
 ## Integrantes
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
+* Pedro Henrique Rodrigues Evangelista 
+* Felipe de Oliveira Pereira
+* Robson Marcolino da silva Junior
+* Lucas de paula silva
 
 ## Orientador
 
-* Nome completo do professor 1
+* Juliana Padilha 
 
 ## Instruções de utilização
 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuiz – Ranking</title>
+    <!-- Usa o global.css para a topbar e as cores de modo escuro/claro -->
+    <link rel="stylesheet" href="../utils/global.css">
+    <link rel="stylesheet" href="ranking.css">
+</head>
+<body>
+
+    <!-- TOP BAR IDÊNTICA AOS PADRÕES EXISTENTES -->
+    <header class="topbar">
+      <button class="btn-back" onclick="history.back()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Voltar
+      </button>
+      <div class="topbar-center">
+        <span class="page-icon">🏆</span>
+        <span class="page-title">Ranking</span>
+      </div>
+      <div style="display:flex; align-items:center; gap: 10px;">
+        <button class="btn-theme" onclick="window.location.href='../dashboard/dashboard.html'" style="display: flex; align-items: center; justify-content: center; width: auto; padding: 0 15px; border-radius: 20px; font-weight: 800; color: var(--text-primary); font-size: 0.9rem;" title="Ir para o Início">🏠 Início</button>
+        <button class="btn-theme" id="btnTheme" title="Alternar tema"></button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTAINER (LAYOUT DE 2 COLUNAS) -->
+    <main class="ranking-wrapper">
+        <div class="ranking-container">
+
+            <!-- LADO ESQUERDO (HERO) -->
+            <div class="ranking-hero">
+                <h1>🏆 Ranking Oficial</h1>
+                <p>Confira os estudantes mais dedicados e onde você está posicionado nesta grande jornada.</p>
+
+                <!-- PÓDIO -->
+                <div class="podium-wrap" id="podiumWrap">
+                  <!-- Injetado pelo JS -->
+                </div>
+
+                <!-- MinHA POSIÇÃO -->
+                <div class="my-rank-card hidden" id="myRankCard">
+                  <div class="my-rank-inner">
+                    <span class="my-rank-label" style="color:var(--text-on-grad); opacity: 0.85;">Sua posição</span>
+                    <span class="my-rank-val" id="myRankVal" style="color:var(--text-on-grad);">—</span>
+                  </div>
+                  <div class="my-rank-inner">
+                    <span class="my-rank-label" style="color:var(--text-on-grad); opacity: 0.85;">XP Acumulado</span>
+                    <span class="my-rank-val accent" id="myXpVal" style="color:var(--text-on-grad); text-shadow: 0 0 10px rgba(0,0,0,0.5);">—</span>
+                  </div>
+                </div>
+            </div>
+
+            <!-- LADO DIREITO (TABELA COMPLETA) -->
+            <div class="ranking-card-box" style="padding-top: 1.5rem;">
+                <div class="ranking-header" style="margin-bottom: 1rem;">
+                  <h2 style="font-size: 1.25rem;">🏅 Leaderboard Completo</h2>
+                  <span class="ranking-sub" id="rankingSub">Carregando…</span>
+                </div>
+
+                <!-- Community XP Stats -->
+                <div class="community-stats" style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
+                  <div class="stat-box" style="flex: 1; background: var(--toggle-btn-bg); padding: 12px; border-radius: 14px; text-align: center; border: 1px solid var(--border);">
+                    <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 800; letter-spacing: 0.5px;">TOTAL DE XP DA FORMAÇÃO</div>
+                    <div id="totalCommunityXp" style="font-size: 1.3rem; font-weight: 900; color: var(--accent); margin-top: 4px;">—</div>
+                  </div>
+                  <div class="stat-box" style="flex: 1; background: var(--toggle-btn-bg); padding: 12px; border-radius: 14px; text-align: center; border: 1px solid var(--border);">
+                    <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 800; letter-spacing: 0.5px;">LIÇÕES CONCLUÍDAS</div>
+                    <div id="totalCommunityLicoes" style="font-size: 1.3rem; font-weight: 900; color: var(--success); margin-top: 4px;">—</div>
+                  </div>
+                </div>
+
+                <!-- Search and Filters -->
+                <div class="ranking-filters" style="display: flex; gap: 10px; margin-bottom: 1rem; align-items: center;">
+                  <div class="search-wrap" style="flex: 1; position: relative;">
+                    <svg style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input type="text" id="searchRank" placeholder="Buscar estudante pelo email / nome..." style="width: 100%; padding: 12px 12px 12px 36px; border-radius: 12px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s;">
+                  </div>
+                  <button class="btn-filter" id="btnSort" title="Inverter Ordem" style="display:flex; align-items:center; justify-content:center; padding: 12px; border-radius: 12px; border: 1px solid var(--input-border); background: var(--toggle-btn-bg); color: var(--text-primary); cursor: pointer; transition: 0.2s;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 16H21M11 8H21M11 22H21M3 8l4-4 4 4M7 4v16"/></svg>
+                  </button>
+                </div>
+
+                <!-- Skeletons -->
+                <div id="skeletons">
+                  <div class="skeleton-row"></div>
+                  <div class="skeleton-row"></div>
+                  <div class="skeleton-row"></div>
+                  <div class="skeleton-row"></div>
+                  <div class="skeleton-row"></div>
+                </div>
+
+                <!-- Lista -->
+                <div id="rankingList"></div>
+
+                <!-- Vazio -->
+                <div class="empty-state hidden" id="emptyState">
+                  <div class="empty-icon">📭</div>
+                  <p>Nenhum usuário com pontuação ainda.<br>Complete lições para aparecer aqui!</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script type="module" src="ranking.js?v=2"></script>
+</body>
+</html>

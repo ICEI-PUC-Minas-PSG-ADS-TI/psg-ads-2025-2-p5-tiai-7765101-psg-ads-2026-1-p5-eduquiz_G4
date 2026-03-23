@@ -61,31 +61,31 @@ O projeto será realizado em **4 Sprints**, com entregas contínuas de código e
 
 ---
 
-# 👥 Papéis de Gestão
+## 👥 Papéis de Gestão
 
-Todos programam.  
+Todos programam.
 Os papéis abaixo são apenas para organização do time.
 
-- 👨‍💻 **Tech Lead (Git Master)**  
-  Responsável pelo repositório e merges.
+* 👨‍💻 **Tech Lead (Git Master)**
+  Responsável pela arquitetura principal, gestão do repositório e aprovação de *pull requests* (merges). Garante a integração contínua das funcionalidades do aplicativo, especialmente a comunicação com a Inteligência Artificial geradora de perguntas.
 
-- 🗄️ **Arquiteto de Dados (DBA Guard)**  
-  Responsável pela modelagem e padronização do banco.
+* 🗄️ **Arquiteto de Dados (DBA Guard)**
+  Responsável pela modelagem e padronização do banco de dados. Estrutura de forma eficiente o armazenamento de perfis de usuários, progressão gamificada (níveis/recompensas), grade curricular (Ensino Fundamental e Médio) e o histórico de erros e acertos.
 
-- 🧪 **Gerente de Qualidade (QA & Code Reviewer)**  
-  Responsável por revisar código e validar testes.
+* 🧪 **Gerente de Qualidade (QA & Code Reviewer)**
+  Responsável por revisar código e validar testes. Garante que o aplicativo seja intuitivo, livre de bugs e acessível para o público-alvo (estudantes de 6 a 18 anos), além de homologar se as explicações geradas pela IA estão claras e corretas.
 
-- 📋 **Facilitador Ágil (PO / Scrum Master)**  
-  Responsável por prazos, Kanban e priorização do backlog.
+* 📋 **Facilitador Ágil (PO / Scrum Master)**
+  Responsável por prazos, gestão do Kanban e priorização do backlog. Assegura que o time foque nas entregas de maior valor educacional e de engajamento a cada ciclo, removendo impedimentos do caminho.
 
 ---
 
-##  Definição dos Papéis – Sprint 1
+### Definição dos Papéis – Sprint 1
 
-- 👨‍💻 Tech Lead:
-- 🗄️ Arquiteto de Dados:
-- 🧪 Gerente de Qualidade:
-- 📋 Facilitador Ágil:
+* 👨‍💻 **Tech Lead:** Robson
+* 🗄️ **Arquiteto de Dados:** Pedro Henrique
+* 🧪 **Gerente de Qualidade:** Felipe
+* 📋 **Facilitador Ágil:** Lucas
 
 > Caso os papéis mudem nas próximas Sprints, atualizar neste documento.
 
@@ -135,10 +135,10 @@ O projeto pode utilizar a aba **Projects** do GitHub, porém é **OBRIGATÓRIO p
 
 | Responsável | Papel | Tarefa | Início | Prazo | Status |
 |-------------|--------|--------|--------|--------|--------|
-|             |        | Preencher Visão do Produto, ODS e Backlog no README | 12/03 | 15/03 | ❌ |
-|             |        | Criar instância do Banco de Dados | 12/03 | 16/03 | ❌ |
-|             |        | Criar repositório e estruturar pastas | 12/03 | 18/03 | ❌ |
-|             |        | Criar tela Hello World conectada à API | 15/03 | 20/03 | ❌ |
+| Robson             |   Tech Lead     | Papéis de Gestão | 12/02 | 12/03 | ✔️ |
+| Lucas            |  Facilitador Ágil      | Banco de Dados,Página de Login | 12/03 | 12/02 | ✔️ |
+| Felipe            |  Gerente de Qualidade     |Quadro Kanban  | 12/02 | 12/03 | ✔️ |
+| Pedro           |  Arquiteto de Dados      | Problema, Objetivos, Justificativa, Público-Avo  | 12/02 | 12/03 | ✔️ |
 
 ---
 

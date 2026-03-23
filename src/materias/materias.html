@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuiz – Matérias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="materias.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="logo">🎓 Edu<span>Quiz</span></div>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div class="avatar" id="avatar">?</div>
+        <span id="userEmail">…</span>
+      </div>
+      <a class="btn-ranking" href="../ranking/ranking.html" style="background: rgba(255,215,0,0.15); color: #f59e0b; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: background 0.2s;">🏆 Ranking</a>
+      <a class="btn-historico" href="../historico/historico.html">📋 Histórico</a>
+      <button class="btn-logout" id="btnLogout">Sair</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1>Matérias</h1>
+        <p>Escolha o que quer estudar hoje</p>
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter active" data-nivel="todos">Todas</button>
+        <button class="filter" data-nivel="fund1">Fund. I</button>
+        <button class="filter" data-nivel="fund2">Fund. II</button>
+        <button class="filter" data-nivel="medio">Médio</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid">
+      <!-- cards injetados pelo JS -->
+    </div>
+
+  </main>
+
+  <script type="module" src="materias.js"></script>
+</body>
+</html>
