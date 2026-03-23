@@ -5,7 +5,7 @@ import { db } from "./firebase.js";
 import {
   doc, getDoc, setDoc, collection, addDoc, getDocs,
   query, orderBy, updateDoc, serverTimestamp, where, limit,
-  collectionGroup,
+  collectionGroup, increment
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -182,6 +182,56 @@ export async function concluirLicao(uid, materiaId, licaoId, acertos, total) {
     acertos,
     total,
   });
+
+  await progressoGamificacao(uid);
+}
+
+/**
+ * Roda após concluir uma lição para atualizar as variáveis de gamificação (streaks/badges).
+ */
+async function progressoGamificacao(uid) {
+  try {
+    const userRef = doc(db, "usuarios", uid);
+    const snap = await getDoc(userRef);
+    if (!snap.exists()) return;
+
+    let { lastStudyDate, badges } = snap.data();
+    let currentStreak = snap.data().currentStreak || 0;
+    badges = badges || [];
+    let totalLicoesFeitas = snap.data().totalLicoesFeitas || 0;
+
+    // Calculo de Streak (Foguinho)
+    const hojeObj = new Date();
+    const hojeStr = hojeObj.toISOString().split("T")[0]; 
+
+    const ontemObj = new Date();
+    ontemObj.setDate(ontemObj.getDate() - 1);
+    const ontemStr = ontemObj.toISOString().split("T")[0];
+
+    if (lastStudyDate === ontemStr) {
+      currentStreak += 1;
+    } else if (lastStudyDate !== hojeStr) {
+      currentStreak = 1;
+    }
+    lastStudyDate = hojeStr;
+
+    // Badges (Conquistas)
+    totalLicoesFeitas += 1; // acabaram de concluir a lição local
+    
+    if (!badges.includes("primeiro_passo")) badges.push("primeiro_passo");
+    if (currentStreak >= 3 && !badges.includes("fogo_3_dias")) badges.push("fogo_3_dias");
+    if (totalLicoesFeitas >= 10 && !badges.includes("maquina_xp")) badges.push("maquina_xp"); // maquina se concluiu 10 licoes
+    
+    await updateDoc(userRef, { 
+      lastStudyDate, 
+      currentStreak, 
+      badges,
+      totalLicoesFeitas: increment(1) 
+    });
+
+  } catch(e) {
+    console.error("Erro ao processar gamificação:", e);
+  }
 }
 
 export async function getProgressoMateria(uid, materiaId) {

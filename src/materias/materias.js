@@ -2,6 +2,7 @@ import { auth }      from "../db/firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getCatalogo }           from "../db/progresso.js";
 import { getProgressoMateria }   from "../db/progresso.js";
+import { initPerfil }            from "../utils/perfil.js";
 
 let uid = null;
 
@@ -9,8 +10,8 @@ let uid = null;
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = "../login/login.html"; return; }
   uid = user.uid;
-  document.getElementById("userEmail").textContent = user.email;
-  document.getElementById("avatar").textContent    = user.email[0].toUpperCase();
+  await initPerfil(user); // Carrega avatar, streak, badges e inicializa o modal
+  
   renderSkeletons();
   await renderCards();
 });

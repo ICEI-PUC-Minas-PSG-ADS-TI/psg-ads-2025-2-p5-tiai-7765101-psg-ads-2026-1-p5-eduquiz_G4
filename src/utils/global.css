@@ -1,0 +1,208 @@
+/* global.css — Design tokens e estilos compartilhados entre todas as páginas */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* ─── TOKENS: MODO CLARO ─────────────────────────────────────── */
+:root {
+  --grad-start: #5f7cff;
+  --grad-end:   #7bd3ff;
+  --bg:         linear-gradient(135deg, var(--grad-start), var(--grad-end));
+  --card-bg:    rgba(255,255,255, 0.92);
+  --card-border: rgba(255,255,255, 0.7);
+  --card-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  --topbar-bg:  rgba(255,255,255, 0.15);
+  --topbar-border: rgba(255,255,255, 0.3);
+  --text-primary:   #1a1a2e;
+  --text-secondary: #444;
+  --text-muted:     #888;
+  --text-on-grad:   #fff;
+  --accent:         #5f7cff;
+  --accent-dark:    #4e68e5;
+  --accent-light:   #e8ecff;
+  --success:        #22c55e;
+  --error:          #ef4444;
+  --warn:           #f59e0b;
+  --border:         rgba(0,0,0,0.08);
+  --input-bg:       #fff;
+  --input-border:   #ccc;
+  --chip-bg:        rgba(95,124,255,0.1);
+  --chip-active-bg: #5f7cff;
+  --chip-active-text: #fff;
+  --toggle-btn-bg:  rgba(255,255,255,0.25);
+  --toggle-btn-hover: rgba(255,255,255,0.45);
+  --skeleton-bg:    rgba(255,255,255,0.3);
+  --bg-image: url('assets/custom_bg_light.png');
+}
+
+/* ─── TOKENS: MODO ESCURO ────────────────────────────────────── */
+html.dark {
+  --grad-start: #1a1a2e;
+  --grad-end:   #16213e;
+  --bg:         linear-gradient(135deg, var(--grad-start), var(--grad-end));
+  --card-bg:    rgba(30, 36, 64, 0.92);
+  --card-border: rgba(95,124,255, 0.2);
+  --card-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  --topbar-bg:  rgba(15,15,35, 0.5);
+  --topbar-border: rgba(95,124,255, 0.2);
+  --text-primary:   #e8eaf6;
+  --text-secondary: #a0a8c8;
+  --text-muted:     #666;
+  --text-on-grad:   #e8eaf6;
+  --accent:         #7c9dff;
+  --accent-dark:    #5f7cff;
+  --accent-light:   rgba(95,124,255,0.15);
+  --success:        #34d399;
+  --error:          #f87171;
+  --warn:           #fbbf24;
+  --border:         rgba(255,255,255,0.06);
+  --input-bg:       rgba(30,36,64,0.8);
+  --input-border:   rgba(95,124,255, 0.3);
+  --chip-bg:        rgba(95,124,255,0.15);
+  --chip-active-bg: #7c9dff;
+  --chip-active-text: #1a1a2e;
+  --toggle-btn-bg:  rgba(95,124,255,0.2);
+  --toggle-btn-hover: rgba(95,124,255,0.35);
+  --skeleton-bg:    rgba(95,124,255,0.1);
+  --bg-image: url('assets/custom_bg_dark.png');
+}
+
+/* ─── RESET & BASE ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Nunito', Arial, sans-serif;
+  background: var(--bg-image) no-repeat center/cover, var(--bg);
+  min-height: 100vh;
+  color: var(--text-primary);
+  transition: background 0.4s ease, color 0.3s ease;
+}
+
+/* ─── TOPBAR COMPARTILHADA ───────────────────────────────────── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: var(--topbar-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--topbar-border);
+  gap: 1rem;
+}
+
+/* ─── BOTÃO TEMA ─────────────────────────────────────────────── */
+.btn-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--toggle-btn-bg);
+  color: var(--text-on-grad);
+  transition: background 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+}
+.btn-theme:hover { background: var(--toggle-btn-hover); transform: rotate(20deg); }
+
+/* ─── CARD / GLASSMORPHISM ───────────────────────────────────── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* ─── BOTÕES ─────────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.4rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 0.65rem 1.3rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn-secondary:hover { background: var(--accent-light); transform: translateY(-1px); }
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--toggle-btn-bg);
+  color: var(--text-on-grad);
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+.btn-back:hover { background: var(--toggle-btn-hover); }
+
+/* ─── USER CHIP ──────────────────────────────────────────────── */
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--toggle-btn-bg);
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-on-grad);
+}
+.avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #fff;
+}
+
+/* ─── LOGO ───────────────────────────────────────────────────── */
+.logo {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text-on-grad);
+  letter-spacing: -0.5px;
+}
+.logo span { color: rgba(255,255,255,0.75); }
+
+/* ─── TRANSIÇÕES SUAVES ──────────────────────────────────────── */
+.topbar, .card, input, button, select, textarea {
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
