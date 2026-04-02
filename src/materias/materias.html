@@ -3,48 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduQuiz – Matérias</title>
+  <title>EduQuiz – Trilhas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="materias.css">
+    <link rel="stylesheet" href="materias.css">
 </head>
 <body>
 
-  <!-- TOP BAR -->
   <header class="topbar">
     <div class="logo">🎓 Edu<span>Quiz</span></div>
+    <div class="topbar-center">
+      <div class="stat-chip">
+        <span class="stat-chip-label">🔥 Sequência</span>
+        <span class="stat-chip-val" id="statSequencia">— dias</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-chip-label">🏅 Nível</span>
+        <span class="stat-chip-val" id="statNivel">—</span>
+      </div>
+    </div>
     <div class="topbar-right">
       <div class="user-chip">
         <div class="avatar" id="avatar">?</div>
         <span id="userEmail">…</span>
       </div>
-      <a class="btn-ranking" href="../ranking/ranking.html" style="background: rgba(255,215,0,0.15); color: #f59e0b; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: background 0.2s;">🏆 Ranking</a>
-      <a class="btn-historico" href="../historico/historico.html">📋 Histórico</a>
-      <button class="btn-logout" id="btnLogout">Sair</button>
+      <button class="btn-logout" id="btnLogout">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Sair
+      </button>
     </div>
   </header>
 
-  <!-- MAIN -->
-  <main class="main">
+  <div class="layout">
 
-    <div class="page-head">
-      <div>
-        <h1>Matérias</h1>
-        <p>Escolha o que quer estudar hoje</p>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <p class="sidebar-label">Navegação</p>
+      <button class="nav-item" onclick="navTo('../dashboard/dashboard.html')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Início
+      </button>
+      <button class="nav-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Trilhas
+      </button>
+      <button class="nav-item" onclick="navTo('../ranking/ranking.html')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/></svg>
+        Ranking
+      </button>
+      <button class="nav-item" onclick="navTo('../historico/historico.html')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Histórico
+      </button>
+      <button class="nav-item" onclick="navTo('../admin/admin.html')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Perfil
+      </button>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+      <div class="section-head">
+        <h2>Trilhas de aprendizado</h2>
+        <p>Escolha um caminho e continue avançando nas lições liberadas.</p>
       </div>
+
       <div class="filters" id="filters">
         <button class="filter active" data-nivel="todos">Todas</button>
         <button class="filter" data-nivel="fund1">Fund. I</button>
         <button class="filter" data-nivel="fund2">Fund. II</button>
         <button class="filter" data-nivel="medio">Médio</button>
       </div>
-    </div>
 
-    <div class="grid" id="grid">
-      <!-- cards injetados pelo JS -->
-    </div>
+      <div class="trilhas-list" id="trilhasList">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </main>
 
-  </main>
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel" id="rightPanel">
+      <div class="panel-empty" id="panelEmpty">
+        <div class="panel-empty-icon">📚</div>
+        <p>Selecione uma trilha<br>para ver as lições</p>
+      </div>
+      <div id="panelContent" style="display:none;flex-direction:column;gap:16px;"></div>
+    </aside>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-icon" id="modalIcon">📖</div>
+      <h3 id="modalTitle">Nova lição</h3>
+      <p class="modal-desc">Tópico: <strong id="modalTopico">—</strong> em <strong id="modalMateria">—</strong></p>
+      <div class="qtd-section">
+        <p class="qtd-label-title">Quantas questões?</p>
+        <div class="qtd-grid" id="qtdGrid">
+          <button class="qtd-btn" data-qtd="1">1</button>
+          <button class="qtd-btn" data-qtd="2">2</button>
+          <button class="qtd-btn" data-qtd="3">3</button>
+          <button class="qtd-btn" data-qtd="4">4</button>
+          <button class="qtd-btn active" data-qtd="5">5</button>
+          <button class="qtd-btn" data-qtd="6">6</button>
+          <button class="qtd-btn" data-qtd="7">7</button>
+          <button class="qtd-btn" data-qtd="8">8</button>
+          <button class="qtd-btn" data-qtd="9">9</button>
+          <button class="qtd-btn" data-qtd="10">10</button>
+        </div>
+        <p class="qtd-selected-label" id="qtdLabel">5 questões</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="btnCancel">Cancelar</button>
+        <button class="btn-confirm" id="btnConfirm">Começar ✨</button>
+      </div>
+    </div>
+  </div>
+
 
   <script type="module" src="materias.js"></script>
 </body>

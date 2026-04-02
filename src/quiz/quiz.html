@@ -12,15 +12,29 @@
 
   <!-- TOP BAR -->
   <header class="topbar">
-    <div class="subject-pill" id="subjectPill">
-      <span id="pillEmoji">📚</span>
-      <span id="pillNome">…</span>
-      <span class="pill-sep">·</span>
-      <span id="pillTopico" class="pill-topico">…</span>
+    <div class="topbar-left">
+
+      <button class="btn-cancel" id="btnCancelarQuiz">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Voltar
+      </button>
+
+      <div class="subject-pill" id="subjectPill">
+        <span id="pillEmoji">📚</span>
+        <span id="pillNome">…</span>
+        <span class="pill-sep">·</span>
+        <span id="pillTopico" class="pill-topico">…</span>
+      </div>
+
     </div>
-    <div class="score-box">
-      <span class="score-lbl">Pontos</span>
-      <span class="score-val" id="scoreVal">0</span>
+
+    <div class="topbar-right">
+      <div class="score-box">
+        <span class="score-lbl">Pontos</span>
+        <span class="score-val" id="scoreVal">0</span>
+      </div>
     </div>
   </header>
 
@@ -47,6 +61,7 @@
         <span class="diff-badge" id="qDiff">Médio</span>
       </div>
       <p class="q-text" id="qText"></p>
+      <span class="source-badge" id="sourceBadge" style="display:none"></span>
     </div>
     <div class="options" id="optionsWrap"></div>
   </div>
@@ -60,7 +75,9 @@
     </div>
     <button class="btn-next" id="btnNext">
       Próxima questão
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
     </button>
   </div>
 
@@ -72,12 +89,27 @@
       <p class="result-sub" id="resSub">Você acertou 4 de 5 questões</p>
       <div class="result-score" id="resScore">+400 pts</div>
       <div class="result-actions">
-        <button class="btn-secondary" onclick="window.location.href='../licao/licao.html?' + retornoParams()">Ver lições</button>
+        <button class="btn-secondary" onclick="window.location.href='../materias/materias.html?' + retornoParams()">Ver trilhas</button>
         <button class="btn-primary"   onclick="novaLicaoMesmoTopico()">Nova lição ✨</button>
       </div>
     </div>
   </div>
 
   <script type="module" src="quiz.js"></script>
+
+  <script type="module">
+    document.getElementById("btnCancelarQuiz").addEventListener("click", () => {
+      const p = new URLSearchParams(window.location.search);
+      const back = new URLSearchParams({
+        id:           p.get("materiaId")    || "",
+        nome:         p.get("materiaNome")  || "",
+        emoji:        p.get("emoji")        || "📚",
+        cor:          p.get("cor")          || "#5f7cff",
+        nivel:        p.get("nivel")        || "",
+        escolaridade: p.get("escolaridade") || "",
+      });
+      window.location.href = `../materias/materias.html?${back}`;
+    });
+  </script>
 </body>
 </html>

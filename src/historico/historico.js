@@ -5,8 +5,6 @@ import {
   collection, getDocs, doc, getDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getCatalogo, getRespostasDaLicao } from "../db/progresso.js";
-import { initTheme, toggleTheme, updateToggleIcon } from "../utils/theme.js";
-import { initPerfil } from "../utils/perfil.js";
 
 
 let uid             = null;
@@ -22,7 +20,9 @@ let respostas       = [];
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = "../login/login.html"; return; }
   uid = user.uid;
-  await initPerfil(user);
+
+  document.getElementById("avatar").textContent    = user.email[0].toUpperCase();
+  document.getElementById("userEmail").textContent = user.email;
 
   catalogo = await getCatalogo().catch(() => []);
   await carregarHistorico();

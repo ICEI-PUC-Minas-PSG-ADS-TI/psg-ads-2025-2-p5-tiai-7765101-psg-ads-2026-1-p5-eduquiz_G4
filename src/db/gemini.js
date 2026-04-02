@@ -1,4 +1,3 @@
-
 //  Fluxo de gerarPergunta():
 //    1. Tenta Gemini (todos os modelos, com retry em 429)
 //    2. Se falhar → busca no Firestore (matéria+tópico → geral → matéria → nível)
@@ -6,12 +5,12 @@
 
 import { buscarQuestoes } from "./progresso.js";
 
-const GEMINI_API_KEY = "AIzaSyCichkz8gHLm8QDah7nfvO8EzgBQ0qqal0";
+const GEMINI_API_KEY = "AIzaSyALU6KzJgpXkrBdg8eDPvqhJYvOBGPt-BQ";
 
 const GEMINI_MODELS = [
+  "gemini-2.5-flash",
   "gemini-2.0-flash",
   "gemini-2.0-flash-lite",
-  "gemini-2.5-flash-preview-04-17",
 ];
 
 const TIMEOUT_MS = 15000;
@@ -28,10 +27,10 @@ function notify(msg) { if (typeof _onStatus === "function") _onStatus(msg); }
 
 //  Fetch com timeout 
 async function fetchGemini(model, body) {
-  const ctrl  = new AbortController();
+  const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
-    const res  = await fetch(modelUrl(model), {
+    const res = await fetch(modelUrl(model), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -53,7 +52,7 @@ export async function geminiText(prompt, opts = {}) {
   const body = {
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: {
-      temperature:     opts.temperature     ?? 0.9,
+      temperature: opts.temperature ?? 0.9,
       maxOutputTokens: opts.maxOutputTokens ?? 800,
     },
   };
@@ -92,11 +91,15 @@ export async function geminiText(prompt, opts = {}) {
 }
 
 export async function geminiJSON(prompt, opts = {}) {
-  const raw   = await geminiText(prompt, opts);
+  const raw = await geminiText(prompt, opts);
   const clean = raw.replace(/```json|```/gi, "").trim();
-  const m     = clean.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+  const m = clean.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
   if (!m) throw new Error("JSON inválido: " + raw);
-  return JSON.parse(m[0]);
+  try {
+    return JSON.parse(m[0]);
+  } catch (e) {
+    throw new Error("JSON inválido: " + raw);
+  }
 }
 
 // Prompts
@@ -114,12 +117,12 @@ Responda SOMENTE com um array JSON de strings, sem markdown:
 //  gerarPergunta
 
 
-let _poolBD   = [];   // questões carregadas do BD
+let _poolBD = [];   // questões carregadas do BD
 let _poolUsed = [];   // ids já usados na sessão
 
 /* Deve ser chamado pelo quiz.js ao iniciar uma nova lição. */
 export function resetPoolBD() {
-  _poolBD   = [];
+  _poolBD = [];
   _poolUsed = [];
 }
 
@@ -134,7 +137,7 @@ export function resetPoolBD() {
  * @returns {Promise<object>} – { pergunta, opcoes, correta, dificuldade, explicacao, _fonte }
  */
 export async function gerarPergunta(materia, nivel, topico, materiaId = "") {
- 
+
   try {
     const prompt = `Você é um professor brasileiro especialista em educação básica.
 Gere UMA pergunta de múltipla escolha sobre o tópico "${topico}" da matéria "${materia}" para o nível "${nivel}" do ensino brasileiro.
@@ -151,7 +154,7 @@ Responda SOMENTE com JSON válido, sem markdown:
 - Opções começam com A), B), C), D)
 - Varie a dificuldade entre Fácil, Médio e Difícil`;
 
-    const q = await geminiJSON(prompt, { temperature: 0.9, maxOutputTokens: 700 });
+    const q = await geminiJSON(prompt, { temperature: 0.9, maxOutputTokens: 1200 });
     return { ...q, _fonte: "ia" };
 
   } catch (erroIA) {
@@ -183,13 +186,13 @@ Responda SOMENTE com JSON válido, sem markdown:
     if (disponíveis.length === 0) {
       console.warn("[gerarPergunta] Pool esgotado, reiniciando ciclo.");
       _poolUsed = [];
-      _poolBD   = await buscarQuestoes(
-        materiaId || materia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g,"_"),
+      _poolBD = await buscarQuestoes(
+        materiaId || materia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "_"),
         topico, nivel, 50, []
       );
     }
 
-    const pool  = _poolBD.filter(q => !_poolUsed.includes(q._id));
+    const pool = _poolBD.filter(q => !_poolUsed.includes(q._id));
     const questao = pool[Math.floor(Math.random() * pool.length)];
     _poolUsed.push(questao._id);
 
@@ -197,12 +200,12 @@ Responda SOMENTE com JSON válido, sem markdown:
     console.log(`[gerarPergunta] Usando questão do BD: ${questao._id}`);
 
     return {
-      pergunta:    questao.pergunta,
-      opcoes:      questao.opcoes,
-      correta:     questao.correta,
+      pergunta: questao.pergunta,
+      opcoes: questao.opcoes,
+      correta: questao.correta,
       dificuldade: questao.dificuldade,
-      explicacao:  questao.explicacao,
-      _fonte:      "banco",  // sinaliza origem para o quiz exibir aviso opcional
+      explicacao: questao.explicacao,
+      _fonte: "banco",  // sinaliza origem para o quiz exibir aviso opcional
     };
 
   } catch (erroBD) {
