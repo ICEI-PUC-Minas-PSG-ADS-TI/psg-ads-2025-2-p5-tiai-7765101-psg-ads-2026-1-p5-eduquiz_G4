@@ -20,11 +20,11 @@ O fluxo principal é:
 
 ### 📎 Diagrama de Arquitetura do Projeto
 
-> 🚨 Insira aqui a imagem do diagrama de arquitetura do grupo.
 
-```
-[IMAGEM: diagrama_arquitetura.png]
-```
+
+
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/9b5358e7240782cc0dc5734034ef409ff47df477/docs/images/Arquitetura.png" width="85%">
+
 
 *Sugestão: utilize Draw.io, Lucidchart ou Figma para criar o diagrama e substitua o bloco acima pela imagem.*
 
@@ -63,11 +63,9 @@ Os wireframes a seguir representam as telas principais do EduQuiz, associadas ao
 
 **História associada:** Como estudante cadastrado, quero fazer login com meu e-mail e senha para acessar minha conta e continuar de onde parei.
 
-> 🚨 Insira aqui o wireframe/mockup da tela de Login.
 
-```
-[IMAGEM: wireframe_login.png]
-```
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/946f7e3588da00f73585c4952da23d91b54055a3/docs/images/Login.png" width="85%">
+
 
 **Descrição:** A tela apresenta campos de e-mail e senha, botão "Entrar" e link para criação de conta. Ao autenticar com sucesso via Firebase Auth, o usuário é redirecionado para o Dashboard. Mensagens de erro são exibidas inline caso as credenciais sejam inválidas.
 
@@ -77,11 +75,10 @@ Os wireframes a seguir representam as telas principais do EduQuiz, associadas ao
 
 **História associada:** Como novo estudante, quero criar uma conta na plataforma informando meu e-mail e senha para acessar as trilhas de aprendizado.
 
-> 🚨 Insira aqui o wireframe/mockup da tela de Cadastro.
 
-```
-[IMAGEM: wireframe_cadastro.png]
-```
+
+
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/092b62bacfbb20d7089ce750dc21faae1ea25985/docs/images/Cadastro.png" width="85%">
 
 **Descrição:** Formulário com campos de nome, e-mail e senha. Ao confirmar, o usuário é registrado no Firebase Authentication e redirecionado para o Dashboard.
 
@@ -91,11 +88,11 @@ Os wireframes a seguir representam as telas principais do EduQuiz, associadas ao
 
 **História associada:** Como estudante, quero visualizar as trilhas de aprendizado organizadas por matéria e nível escolar para escolher o conteúdo mais adequado ao meu ano.
 
-> 🚨 Insira aqui o wireframe/mockup da tela de Trilhas.
 
-```
-[IMAGEM: wireframe_materias.png]
-```
+
+
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/092b62bacfbb20d7089ce750dc21faae1ea25985/docs/images/Trilhas.png" width="85%">
+
 
 **Descrição:** Layout em três colunas: barra lateral de navegação, lista de trilhas com barra de progresso percentual, e painel direito com os tópicos da matéria selecionada. Filtros por nível (Fund. I, Fund. II, Médio) no topo da lista. Ao clicar em "Iniciar" em um tópico, abre o modal de seleção de quantidade de questões (1–10).
 
@@ -105,11 +102,11 @@ Os wireframes a seguir representam as telas principais do EduQuiz, associadas ao
 
 **História associada:** Como estudante, quero responder perguntas geradas por IA e receber explicações após cada resposta para aprender com meus erros.
 
-> 🚨 Insira aqui o wireframe/mockup da tela de Quiz.
 
-```
-[IMAGEM: wireframe_quiz.png]
-```
+
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/092b62bacfbb20d7089ce750dc21faae1ea25985/docs/images/Quest%C3%A3o.png" width="85%">
+
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/092b62bacfbb20d7089ce750dc21faae1ea25985/docs/images/Resposta.png" width="85%">
 
 **Descrição:** Topbar com botão voltar, nome da matéria/tópico e pontuação atual. Barra de progresso indicando questão atual. Card central com o enunciado, badge de dificuldade e quatro alternativas (A/B/C/D). Após responder, exibe card de feedback (verde = acerto, vermelho = erro) com explicação detalhada e botão "Próxima questão". Ao finalizar todas as questões, exibe tela de resultado com XP conquistado.
 
@@ -119,11 +116,8 @@ Os wireframes a seguir representam as telas principais do EduQuiz, associadas ao
 
 **História associada:** Como estudante, quero visualizar um ranking global com minha posição e a dos outros usuários para me motivar a estudar mais.
 
-> 🚨 Insira aqui o wireframe/mockup da tela de Ranking.
 
-```
-[IMAGEM: wireframe_ranking.png]
-```
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/092b62bacfbb20d7089ce750dc21faae1ea25985/docs/images/Ranking.png" width="85%">
 
 **Descrição:** Layout em duas colunas. À esquerda: pódio visual com os 3 primeiros colocados e card com a posição e XP do usuário logado. À direita: leaderboard completo com campo de busca, ordenação e lista de todos os usuários com posição, avatar, e-mail e XP.
 
