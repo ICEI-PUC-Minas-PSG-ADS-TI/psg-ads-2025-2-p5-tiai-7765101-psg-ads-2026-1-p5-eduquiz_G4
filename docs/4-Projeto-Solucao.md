@@ -127,11 +127,10 @@ Os wireframes a seguir representam as telas principais do EduQuiz, associadas ao
 
 **História associada:** Como estudante, quero ver o histórico das minhas lições e revisar as questões respondidas para identificar meus pontos fracos.
 
-> 🚨 Insira aqui o wireframe/mockup da tela de Histórico.
+<img src="https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/23a99619bba63f5bb8fd3bffabf0db3f62c72406/docs/images/Pagina_Historico.png" width="85%">
 
-```
-[IMAGEM: wireframe_historico.png]
-```
+
+
 
 **Descrição:** Barra de resumo geral (lições concluídas, acertos, erros, taxa de acerto). Filtros por resultado e campo de busca. Lista de lições com indicador circular de aproveitamento, nome da matéria, tópico e data. Ao clicar em uma lição, abre modal de revisão com todas as questões respondidas, gabarito e explicações.
 
