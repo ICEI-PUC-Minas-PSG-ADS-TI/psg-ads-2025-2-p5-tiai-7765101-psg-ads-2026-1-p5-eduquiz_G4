@@ -147,7 +147,7 @@ O projeto pode utilizar a aba **Projects** do GitHub, porém é **OBRIGATÓRIO p
 | Responsável | Papel | Tarefa | Início | Prazo | Status |
 |-------------|--------|--------|--------|--------|--------|
 |Robson            |  Tech Lead        |  | 13/03 | 06/04 | ❌ |
-|Lucas             |  Facilitador Ágil        | | 13/03  | 06/04| ❌ |
+|Lucas             |  Facilitador Ágil        | Front da página de Login e Cadastro melhoradas | 13/03  | 06/04| ✔️ |
 |Felipe             |  Gerente de Qualidade       | Front da página inicial e melhorias no progresso do usuário (nível, xp e pontos) | 13/03  | 06/04 | ✔️ |
 |Pedro             |  Arquiteto de Dados       | Back e Front das paginas ( Historico, Materias e Quiz ), integração com a IA, Rfs e Historias de Usuario | 13/03  | 06/04 | ✔️ |
 
