@@ -257,16 +257,23 @@ export async function getRespostasDaLicao(uid, materiaId, licaoId) {
  * Limita a 100 lições para performance.
  */
 export async function getHistoricoCompleto(uid) {
-  // Busca todas as matérias que o usuário já acessou
-  const materiasSnap = await getDocs(collection(db, "usuarios", uid, "materias"));
-
-  if (materiasSnap.empty) return [];
+  // Usa o catálogo para garantir que vamos checar todas as matérias
+  // pois documentos "fantasmas" no Firestore não retornam em getDocs()
+  let materias = [];
+  try {
+    materias = await getCatalogo();
+  } catch (e) {
+    console.warn("Falha ao carregar catálogo para histórico", e);
+    return [];
+  }
+  
+  if (!materias || materias.length === 0) return [];
 
   const todasLicoes = [];
 
   // Para cada matéria, busca todas as lições (sem orderBy para evitar índice composto)
-  await Promise.all(materiasSnap.docs.map(async (matDoc) => {
-    const materiaId = matDoc.id;
+  await Promise.all(materias.map(async (mat) => {
+    const materiaId = mat.id;
     try {
       // Sem orderBy aqui — ordenamos no JS depois
       const snap = await getDocs(licoesRef(uid, materiaId));
@@ -294,4 +301,54 @@ export async function getHistoricoCompleto(uid) {
       return tb - ta;
     })
     .slice(0, 100);
+}
+
+/**
+ * Busca todas as estatísticas do usuário agregando todas as lições concluídas
+ */
+export async function getUserStats(uid) {
+  let materias = [];
+  try {
+    materias = await getCatalogo();
+  } catch (e) {
+    console.warn("Falha ao carregar catálogo para stats", e);
+  }
+  
+  let totalXp = 0;
+  let totalLicoes = 0;
+  let acertosGlobais = 0;
+  let questoesGlobais = 0;
+
+  if (materias && materias.length > 0) {
+    await Promise.all(materias.map(async (mat) => {
+      try {
+        const licoesSnap = await getDocs(collection(db, "usuarios", uid, "materias", mat.id, "licoes"));
+        licoesSnap.docs.forEach(licDoc => {
+          const l = licDoc.data();
+          if (l.concluida) {
+            totalXp += (l.xp && l.xp > 0) ? l.xp : ((l.acertos || 0) * 20);
+            totalLicoes++;
+            acertosGlobais += (l.acertos || 0);
+            questoesGlobais += (l.total || 0);
+          }
+        });
+      } catch (e) {
+        console.warn("Erro ao buscar estatísticas de", mat.id, e);
+      }
+    }));
+  }
+
+  const nivelCalculado = Math.floor(totalXp / 100) + 1;
+  const sequencia = totalLicoes > 0 ? 1 : 0;
+  const taxaAcerto = questoesGlobais > 0 ? Math.round((acertosGlobais / questoesGlobais) * 100) : 0;
+
+  return {
+    totalXp,
+    totalLicoes,
+    nivel: nivelCalculado,
+    sequencia,
+    acertosGlobais,
+    questoesGlobais,
+    taxaAcerto
+  };
 }

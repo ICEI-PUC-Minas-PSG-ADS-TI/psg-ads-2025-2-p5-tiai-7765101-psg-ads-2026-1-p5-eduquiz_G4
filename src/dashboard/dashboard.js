@@ -1,6 +1,6 @@
 import { auth } from "../db/firebase.js";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { getHistoricoCompleto, getMateria } from "../db/progresso.js";
+import { getHistoricoCompleto, getMateria, getUserStats } from "../db/progresso.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Topbar logout
@@ -37,33 +37,19 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 async function renderDashboardData(uid) {
-    // 1. Puxar o histórico de lições concluídas
+    // 1. Puxar o histórico de lições concluídas (limitado para UI recente)
     const historico = await getHistoricoCompleto(uid);
     
-    let totalLicoesConcluidas = historico.length;
-    let totalAcertos = 0;
-    let totalQuestoesTentadas = 0;
-    let totalXp = 0;
+    // 2. Puxar stats globais unificados
+    const stats = await getUserStats(uid);
 
-    historico.forEach(licao => {
-        totalAcertos += (licao.acertos || 0);
-        totalQuestoesTentadas += (licao.total || 0);
-        totalXp += (licao.xp && licao.xp > 0) ? licao.xp : ((licao.acertos || 0) * 20); 
-    });
+    // 3. Atualizar Cards Estatísticos e Topbar
+    document.getElementById("statsLicoes").textContent = stats.totalLicoes;
+    document.getElementById("statsAcerto").textContent = stats.taxaAcerto + "%";
+    document.getElementById("statsXp").textContent = stats.totalXp + " XP";
 
-    const taxaAcerto = totalQuestoesTentadas > 0 ? Math.round((totalAcertos / totalQuestoesTentadas) * 100) : 0;
-
-    // 2. Atualizar Cards Estatísticos e Topbar
-    document.getElementById("statsLicoes").textContent = totalLicoesConcluidas;
-    document.getElementById("statsAcerto").textContent = taxaAcerto + "%";
-    document.getElementById("statsXp").textContent = totalXp + " XP";
-
-    // O nível na topbar poderia ser XP / 100 por exemplo
-    const nivelCalculado = Math.floor(totalXp / 100) + 1;
-    document.getElementById("statNivel").textContent = nivelCalculado;
-    
-    // Simulação de sequência (poderia vir de um BD de logins diários)
-    document.getElementById("statSequencia").textContent = (totalLicoesConcluidas > 0 ? "1 dia" : "0 dias");
+    document.getElementById("statNivel").textContent = stats.nivel;
+    document.getElementById("statSequencia").textContent = (stats.sequencia > 0 ? "1 dia" : "0 dias");
 
     // 3. Atualizar "Continuar de onde parou"
     const container = document.getElementById("quickContinueContainer");
