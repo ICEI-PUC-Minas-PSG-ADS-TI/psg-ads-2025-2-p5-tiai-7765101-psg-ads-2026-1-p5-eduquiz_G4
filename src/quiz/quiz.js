@@ -185,7 +185,7 @@ function atualizarProgresso() {
 //Salvar no Firestore 
 async function salvarResultado() {
   if (!LICAO_ID || !uid) return;
-  try { await concluirLicao(uid, MAT_ID, LICAO_ID, acertos, TOTAL); }
+  try { await concluirLicao(uid, MAT_ID, LICAO_ID, acertos, TOTAL, score); }
   catch (e) { console.error("Erro ao salvar resultado:", e); }
 }
 

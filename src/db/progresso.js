@@ -14,19 +14,19 @@ import {
   Se não existir, sobe o padrão de Português para testes.
  */
 export async function getCatalogo() {
-  const ref  = doc(db, "config", "materias");
+  const ref = doc(db, "config", "materias");
   const snap = await getDoc(ref);
   if (snap.exists()) return snap.data().lista ?? [];
 
   // Seed padrão (só Português) para testes
   const padrao = [
     {
-      id:         "portugues",
-      nome:       "Língua Portuguesa",
-      emoji:      "📖",
-      cor:        "#ef4444",
+      id: "portugues",
+      nome: "Língua Portuguesa",
+      emoji: "📖",
+      cor: "#ef4444",
       escolaridade: "Fundamental II",
-      nivel:      "6º Ano",
+      nivel: "6º Ano",
       nivelFiltro: "fund2",
       topicos: [
         "Interpretação de Texto",
@@ -62,17 +62,17 @@ export async function getMateria(materiaId) {
  */
 export async function salvarQuestao(questao) {
   const ref = await addDoc(collection(db, "questoes"), {
-    materiaId:   questao.materiaId,
+    materiaId: questao.materiaId,
     materiaNome: questao.materiaNome,
-    topico:      questao.topico,
-    nivel:       questao.nivel,
+    topico: questao.topico,
+    nivel: questao.nivel,
     escolaridade: questao.escolaridade ?? "",
-    pergunta:    questao.pergunta,
-    opcoes:      questao.opcoes,
-    correta:     questao.correta,
+    pergunta: questao.pergunta,
+    opcoes: questao.opcoes,
+    correta: questao.correta,
     dificuldade: questao.dificuldade,
-    explicacao:  questao.explicacao,
-    criadaEm:    serverTimestamp(),
+    explicacao: questao.explicacao,
+    criadaEm: serverTimestamp(),
   });
   return ref.id;
 }
@@ -91,21 +91,21 @@ export async function buscarQuestoes(materiaId, topico, nivel = "", quantidade =
   const semUsadas = (arr) => arr.filter(d => !usedIds.includes(d._id ?? d.id));
 
   async function buscar(constraints) {
-    const q    = query(collection(db, "questoes"), ...constraints, limit(quantidade * 5));
+    const q = query(collection(db, "questoes"), ...constraints, limit(quantidade * 5));
     const snap = await getDocs(q);
     return snap.docs.map(d => ({ _id: d.id, ...d.data() }));
   }
 
   // 1. Matéria + tópico exato
   let docs = semUsadas(embaralha(
-    await buscar([where("materiaId","==",materiaId), where("topico","==",topico)])
+    await buscar([where("materiaId", "==", materiaId), where("topico", "==", topico)])
   ));
   if (docs.length >= quantidade) return docs.slice(0, quantidade);
 
   // 2. Matéria + "Geral" (se tópico não for Geral)
   if (topico !== "Geral") {
     const geral = semUsadas(embaralha(
-      await buscar([where("materiaId","==",materiaId), where("topico","==","Geral")])
+      await buscar([where("materiaId", "==", materiaId), where("topico", "==", "Geral")])
     ));
     docs = embaralha([...docs, ...geral.filter(g => !docs.some(d => d._id === g._id))]);
     if (docs.length >= quantidade) return docs.slice(0, quantidade);
@@ -113,7 +113,7 @@ export async function buscarQuestoes(materiaId, topico, nivel = "", quantidade =
 
   // 3. Só matéria (qualquer tópico)
   const qualquerTopico = semUsadas(embaralha(
-    await buscar([where("materiaId","==",materiaId)])
+    await buscar([where("materiaId", "==", materiaId)])
   ));
   docs = embaralha([...docs, ...qualquerTopico.filter(q => !docs.some(d => d._id === q._id))]);
   if (docs.length >= quantidade) return docs.slice(0, quantidade);
@@ -121,7 +121,7 @@ export async function buscarQuestoes(materiaId, topico, nivel = "", quantidade =
   // 4. Só nível (qualquer matéria) — último recurso
   if (nivel) {
     const porNivel = semUsadas(embaralha(
-      await buscar([where("nivel","==",nivel)])
+      await buscar([where("nivel", "==", nivel)])
     ));
     docs = embaralha([...docs, ...porNivel.filter(p => !docs.some(d => d._id === p._id))]);
   }
@@ -132,9 +132,9 @@ export async function buscarQuestoes(materiaId, topico, nivel = "", quantidade =
 
 //  TÓPICOS DO USUÁRIO  (cache por usuário)
 
-function materiaRef(uid, mid)       { return doc(db, "usuarios", uid, "materias", mid); }
-function licoesRef(uid, mid)        { return collection(db, "usuarios", uid, "materias", mid, "licoes"); }
-function licaoRef(uid, mid, lid)    { return doc(db, "usuarios", uid, "materias", mid, "licoes", lid); }
+function materiaRef(uid, mid) { return doc(db, "usuarios", uid, "materias", mid); }
+function licoesRef(uid, mid) { return collection(db, "usuarios", uid, "materias", mid, "licoes"); }
+function licaoRef(uid, mid, lid) { return doc(db, "usuarios", uid, "materias", mid, "licoes", lid); }
 
 export async function getTopicos(uid, materiaId) {
   // Primeiro tenta no catálogo global (fonte principal)
@@ -155,7 +155,7 @@ export async function salvarTopicos(uid, materiaId, topicos) {
 
 
 export async function getLicoes(uid, materiaId) {
-  const q    = query(licoesRef(uid, materiaId), orderBy("criadaEm", "desc"));
+  const q = query(licoesRef(uid, materiaId), orderBy("criadaEm", "desc"));
   const snap = await getDocs(q);
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
@@ -168,36 +168,37 @@ export async function criarLicao(uid, materiaId, topico, totalQuestoes = 5) {
   const ref = await addDoc(licoesRef(uid, materiaId), {
     topico,
     totalQuestoes,
-    criadaEm:  serverTimestamp(),
+    criadaEm: serverTimestamp(),
     concluida: false,
-    acertos:   0,
-    total:     0,
+    acertos: 0,
+    total: 0,
   });
   return ref.id;
 }
 
-export async function concluirLicao(uid, materiaId, licaoId, acertos, total) {
+export async function concluirLicao(uid, materiaId, licaoId, acertos, total, score = 0) {
   await updateDoc(licaoRef(uid, materiaId, licaoId), {
     concluida: true,
     acertos,
     total,
+    xp: score
   });
 }
 
 export async function getProgressoMateria(uid, materiaId) {
-  const licoes     = await getLicoes(uid, materiaId);
+  const licoes = await getLicoes(uid, materiaId);
   const concluidas = licoes.filter(l => l.concluida);
 
   if (!concluidas.length)
     return { porcentagem: 0, licoesFeitas: 0, totalLicoes: licoes.length };
 
   const acertos = concluidas.reduce((s, l) => s + (l.acertos ?? 0), 0);
-  const total   = concluidas.reduce((s, l) => s + (l.total   ?? 1), 0);
+  const total = concluidas.reduce((s, l) => s + (l.total ?? 1), 0);
 
   return {
-    porcentagem:  Math.round((acertos / total) * 100),
+    porcentagem: Math.round((acertos / total) * 100),
     licoesFeitas: concluidas.length,
-    totalLicoes:  licoes.length,
+    totalLicoes: licoes.length,
   };
 }
 
@@ -220,18 +221,18 @@ function respostasRef(uid, materiaId, licaoId) {
  */
 export async function salvarResposta(uid, materiaId, licaoId, resposta) {
   await addDoc(respostasRef(uid, materiaId, licaoId), {
-    pergunta:        resposta.pergunta,
-    opcoes:          resposta.opcoes,
-    correta:         resposta.correta,
+    pergunta: resposta.pergunta,
+    opcoes: resposta.opcoes,
+    correta: resposta.correta,
     respostaUsuario: resposta.respostaUsuario,
-    acertou:         resposta.acertou,
-    dificuldade:     resposta.dificuldade  ?? "Médio",
-    explicacao:      resposta.explicacao   ?? "",
-    topico:          resposta.topico       ?? "",
-    materiaNome:     resposta.materiaNome  ?? "",
-    materiaId:       materiaId,
-    nivel:           resposta.nivel        ?? "",
-    respondidaEm:    serverTimestamp(),
+    acertou: resposta.acertou,
+    dificuldade: resposta.dificuldade ?? "Médio",
+    explicacao: resposta.explicacao ?? "",
+    topico: resposta.topico ?? "",
+    materiaNome: resposta.materiaNome ?? "",
+    materiaId: materiaId,
+    nivel: resposta.nivel ?? "",
+    respondidaEm: serverTimestamp(),
   });
 }
 
@@ -273,7 +274,7 @@ export async function getHistoricoCompleto(uid) {
         const data = d.data();
         // Inclui concluídas E não concluídas — filtra depois
         todasLicoes.push({
-          id:        d.id,
+          id: d.id,
           materiaId,
           ...data,
         });

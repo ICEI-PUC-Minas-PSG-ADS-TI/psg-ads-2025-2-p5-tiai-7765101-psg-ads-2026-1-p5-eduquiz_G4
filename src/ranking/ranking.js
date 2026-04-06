@@ -39,7 +39,7 @@ async function carregarRanking() {
       const avatar = data.avatar || email[0].toUpperCase();
       const badges = data.badges || [];
 
-      let totalAcertos = 0;
+      let totalXp = 0;
       let totalLicoes  = 0;
 
       // Busca todas as matérias do usuário
@@ -55,14 +55,14 @@ async function carregarRanking() {
         licoesSnap.docs.forEach(licDoc => {
           const l = licDoc.data();
           if (l.concluida) {
-            totalAcertos += (l.acertos ?? 0);
+            totalXp += (l.xp && l.xp > 0) ? l.xp : ((l.acertos || 0) * 20);
             totalLicoes++;
           }
         });
       }));
 
       if (totalLicoes > 0) {
-        ranking.push({ uid, email, avatar, badges, xp: totalAcertos, licoes: totalLicoes });
+        ranking.push({ uid, email, avatar, badges, xp: totalXp, licoes: totalLicoes });
       }
     }));
 
