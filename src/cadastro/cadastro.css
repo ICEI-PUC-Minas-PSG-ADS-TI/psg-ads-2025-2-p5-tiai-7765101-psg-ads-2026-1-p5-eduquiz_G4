@@ -1,6 +1,6 @@
 :root {
   --primary-color: #5f7cff;
-  --button-bg: #6366f1; /* Cor aproximada do botão do print */
+  --button-bg: #6366f1;
   --text-dark: #2d3748;
   --bg-gradient: linear-gradient(135deg, #0044ff 0%, #a2d9ff 100%);
 }
@@ -47,7 +47,6 @@ body {
   line-height: 1.6;
 }
 
-/* Card de Autenticação */
 .auth-card {
   background: rgba(255, 255, 255, 0.95);
   padding: 50px 40px;
@@ -72,7 +71,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* Inputs */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -101,7 +99,6 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(95, 124, 255, 0.1);
 }
 
-/* Botão Estilo Dashboard */
 .btn-primary {
   background: var(--button-bg);
   border: none;
@@ -124,7 +121,6 @@ input:focus {
   box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
 }
 
-/* Rodapé do Card */
 .footer-links {
   text-align: center;
   font-size: 14px;
@@ -149,7 +145,6 @@ input:focus {
   min-height: 20px;
 }
 
-/* Responsividade */
 @media (max-width: 900px) {
   .container {
     flex-direction: column;

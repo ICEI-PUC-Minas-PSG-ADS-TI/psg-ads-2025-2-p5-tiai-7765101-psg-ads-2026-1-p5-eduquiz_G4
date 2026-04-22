@@ -145,7 +145,6 @@ input:focus {
   min-height: 20px;
 }
 
-/* Responsividade Básica */
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
