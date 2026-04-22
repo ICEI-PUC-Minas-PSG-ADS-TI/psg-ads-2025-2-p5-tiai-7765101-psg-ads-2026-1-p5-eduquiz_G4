@@ -3,32 +3,46 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Criar Conta</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLink | Criar Conta</title>
     <link rel="stylesheet" href="cadastro.css">
-
 </head>
 
 <body>
 
     <div class="container">
+        <div class="hero">
+            <h1>EduLink 🎓</h1>
+            <h2>Comece sua jornada agora.</h2>
+            <p>Junte-se a milhares de alunos e transforme sua forma de estudar com IA.</p>
+        </div>
 
-        <h1>Criar conta</h1>
+        <div class="auth-card">
+            <h2>Criar conta</h2>
+            <p class="subtitle">Preencha os dados abaixo para começar.</p>
 
-        <input type="email" id="email" placeholder="Seu email">
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="seu@email.com" required>
+            </div>
 
-        <input type="password" id="senha" placeholder="Sua senha">
+            <div class="input-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" placeholder="Crie uma senha forte" required>
+            </div>
 
-        <button onclick="cadastrar()">Cadastrar</button>
+            <button onclick="cadastrar()" class="btn-primary">Cadastrar</button>
 
-        <p id="erro"></p>
+            <div class="footer-links">
+                <span>Já tem uma conta?</span>
+                <a class="link-auth" href="../login/login.html">Fazer login</a>
+            </div>
 
-        <a href="../login/login.html">Já tem conta? Fazer login</a>
-
+            <p id="erro"></p>
+        </div>
     </div>
 
     <script type="module" src="cadastro.js"></script>
-
 </body>
 
 </html>

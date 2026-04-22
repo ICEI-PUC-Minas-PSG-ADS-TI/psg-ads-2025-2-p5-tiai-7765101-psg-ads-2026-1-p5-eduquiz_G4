@@ -1,43 +1,48 @@
-np<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
-    <title>EduLink Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLink | Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
     <div class="container">
-
         <div class="hero">
-            <h1>Onde o conhecimento ganha vida.</h1>
+            <h1>EduLink 🎓</h1>
+            <h2>Onde o conhecimento ganha vida.</h2>
             <p>Plataforma inteligente que utiliza IA para impulsionar seu sucesso escolar.</p>
         </div>
 
         <div class="login-card">
+            <h2>Bem-vindo(a)! 👋</h2>
+            <p class="subtitle">Faça login para continuar sua jornada.</p>
 
-            <h2>Login</h2>
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="exemplo@email.com" required>
+            </div>
 
-            <input type="email" id="email" placeholder="Seu email" required>
+            <div class="input-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" placeholder="Sua senha secreta" required>
+            </div>
 
-            <input type="password" id="senha" placeholder="Sua senha" required>
+            <button onclick="login()" class="btn-primary">Entrar</button>
 
-            <button onclick="login()">Entrar</button>
-
-            <a class="criar-conta" href="../cadastro/cadastro.html">
-                Criar conta
-            </a>
+            <div class="footer-links">
+                <span>Não tem uma conta?</span>
+                <a class="criar-conta" href="../cadastro/cadastro.html">Criar conta</a>
+            </div>
 
             <p id="erro"></p>
-
         </div>
-
     </div>
 
     <script type="module" src="login.js"></script>
-
 </body>
 
 </html>
