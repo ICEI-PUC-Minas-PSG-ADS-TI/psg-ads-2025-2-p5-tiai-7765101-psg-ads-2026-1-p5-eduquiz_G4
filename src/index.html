@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuiz — Aprender nunca foi tão divertido</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #5f7cff;
+      --cyan:   #7bd3ff;
+      --purple: #a78bfa;
+      --green:  #22c55e;
+      --yellow: #fbbf24;
+      --red:    #f87171;
+      --dark:   #0d0f1a;
+      --dark2:  #13162b;
+      --dark3:  #1a1e3a;
+      --text:   #1a1a2e;
+      --muted:  #4a5580;
+      --border: rgba(95,124,255,0.2);
+      --bg-grad: linear-gradient(135deg, #5f7cff, #7bd3ff);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg-grad);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.35);
+    }
+
+    .nav-logo {
+      font-size: 1.5rem; font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .nav-logo span { color: rgba(255,255,255,0.65); }
+
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      font-weight: 700; font-size: 0.9rem; transition: color .2s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    .nav-actions { display: flex; align-items: center; gap: 0.6rem; }
+
+    .nav-cta-outline {
+      background: rgba(255,255,255,0.2); color: #fff; border: 2px solid rgba(255,255,255,0.6);
+      padding: 0.55rem 1.2rem; border-radius: 10px;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+      cursor: pointer; transition: all .2s; text-decoration: none;
+    }
+    .nav-cta-outline:hover { background: rgba(255,255,255,0.35); transform: translateY(-1px); }
+
+    .nav-cta {
+      background: rgba(255,255,255,0.95); color: var(--blue); border: none;
+      padding: 0.6rem 1.4rem; border-radius: 10px;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+      cursor: pointer; transition: all .2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12); text-decoration: none;
+    }
+    .nav-cta:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,0,0,0.18); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 8rem 2rem 4rem;
+      position: relative; text-align: center; overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute; width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; animation: float 8s ease-in-out infinite;
+    }
+    .orb-1 { width: 400px; height: 400px; background: rgba(255,255,255,0.15); top: 10%; left: -10%; }
+    .orb-2 { width: 300px; height: 300px; background: rgba(123,211,255,0.25); top: 20%; right: -5%; animation-delay: 3s; }
+    .orb-3 { width: 250px; height: 250px; background: rgba(95,124,255,0.2); bottom: 20%; left: 20%; animation-delay: 1.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.5);
+      color: #fff; padding: 0.4rem 1rem; border-radius: 999px;
+      font-size: 0.8rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+      margin-bottom: 2rem; animation: fadeUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700; line-height: 1.05; letter-spacing: -0.03em;
+      color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+      margin-bottom: 1.5rem; animation: fadeUp 0.6s ease 0.1s both;
+    }
+
+    .hero h1 .line-accent {
+      background: linear-gradient(90deg, #fff, rgba(255,255,255,0.7));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,0.85); line-height: 1.8; max-width: 600px; margin: 0 auto 2.5rem;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 4rem; animation: fadeUp 0.6s ease 0.3s both;
+    }
+
+    .btn-lg {
+      padding: 1rem 2.2rem; border-radius: 14px;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem;
+      cursor: pointer; transition: all .2s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-primary-lg {
+      background: rgba(255,255,255,0.97);
+      color: var(--blue); border: none; box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+    }
+    .btn-primary-lg:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); background: #fff; }
+
+    .btn-ghost-lg {
+      background: rgba(255,255,255,0.18); color: #fff; border: 2px solid rgba(255,255,255,0.5);
+    }
+    .btn-ghost-lg:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+
+    /* PREVIEW CARD */
+    .hero-preview {
+      position: relative; width: 100%; max-width: 900px; margin: 0 auto;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+
+    .preview-card {
+      background: rgba(255,255,255,0.92); border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 20px; padding: 2rem;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+      color: #1a1a2e;
+    }
+
+    .preview-top {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;
+    }
+
+    .preview-pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(95,124,255,0.1); border: 1px solid rgba(95,124,255,0.3);
+      padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 800; color: var(--blue);
+    }
+
+    .preview-score { font-size: 1.8rem; font-weight: 900; color: var(--blue); }
+    .preview-score span { font-size: 0.75rem; color: #888; font-weight: 700; display: block; text-align: right; }
+
+    .preview-progress {
+      height: 6px; background: rgba(95,124,255,0.12); border-radius: 999px; overflow: hidden; margin-bottom: 1.5rem;
+    }
+    .preview-progress-fill {
+      height: 100%; width: 60%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 999px;
+    }
+
+    .preview-question {
+      font-size: 1.05rem; font-weight: 700; line-height: 1.6; margin-bottom: 1.5rem; color: #1a1a2e;
+    }
+
+    .preview-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+    .preview-opt {
+      background: rgba(95,124,255,0.05); border: 1px solid rgba(95,124,255,0.15);
+      border-radius: 12px; padding: 0.8rem 1rem;
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 0.9rem; font-weight: 700; color: #1a1a2e;
+    }
+    .preview-opt.correct { border-color: rgba(34,197,94,0.5); background: rgba(34,197,94,0.1); color: #16a34a; }
+
+    .preview-opt-letter {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: rgba(95,124,255,0.15); color: var(--blue);
+      font-size: 0.75rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .preview-opt.correct .preview-opt-letter { background: #22c55e; color: #fff; }
+
+    .float-card {
+      position: absolute; background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(255,255,255,0.9); border-radius: 14px; padding: 0.9rem 1.2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; font-weight: 700; color: #1a1a2e;
+      animation: floatCard 4s ease-in-out infinite;
+    }
+    .float-card-1 { right: -60px; top: 30px; }
+    .float-card-2 { left: -60px; bottom: 80px; animation-delay: 2s; }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+
+    .float-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .float-val { font-size: 1.1rem; font-weight: 900; color: var(--blue); }
+    .float-lbl { font-size: 0.72rem; color: #666; font-weight: 600; }
+
+    /* STATS STRIP */
+    .stats-strip {
+      background: rgba(255,255,255,0.2);
+      border-top: 1px solid rgba(255,255,255,0.4); border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding: 3rem 2rem;
+      display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 3rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-val {
+      font-family: 'Space Grotesk', sans-serif; font-size: 2.8rem; font-weight: 700;
+      color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.15); line-height: 1;
+    }
+    .stat-lbl { font-size: 0.85rem; color: rgba(255,255,255,0.75); font-weight: 700; margin-top: 0.3rem; }
+    .stat-sep { width: 1px; height: 50px; background: rgba(255,255,255,0.3); }
+
+    /* SECTIONS */
+    section { padding: 6rem 2rem; position: relative; z-index: 1; background: rgba(255,255,255,0.08); }
+
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.5);
+      color: #fff; padding: 0.35rem 0.9rem; border-radius: 999px;
+      font-size: 0.75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-h2 {
+      font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1rem; color: #fff;
+    }
+
+    .section-sub { color: rgba(255,255,255,0.8); font-size: 1.05rem; line-height: 1.75; max-width: 540px; }
+
+    /* HOW IT WORKS */
+    .how { max-width: 1100px; margin: 0 auto; }
+    .how-header { text-align: center; margin-bottom: 4rem; }
+    .how-header .section-sub { margin: 0 auto; }
+
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
+
+    .step-card {
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px; padding: 2rem; position: relative; overflow: hidden;
+      transition: transform .3s ease, border-color .3s;
+    }
+    .step-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.6); }
+
+    .step-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .step-num {
+      font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700;
+      color: rgba(255,255,255,0.2); line-height: 1; margin-bottom: 1rem;
+    }
+    .step-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .step-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff; }
+    .step-card p  { font-size: 0.9rem; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+    /* FEATURES */
+    .features { max-width: 1100px; margin: 0 auto; }
+    .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; margin-top: 4rem; }
+    .features-left { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .feat-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.2rem; border-radius: 14px; border: 1px solid transparent; transition: all .3s; cursor: default;
+    }
+    .feat-item:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+
+    .feat-icon-wrap {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+    }
+    .feat-item h4 { font-size: 1rem; font-weight: 800; margin-bottom: 0.3rem; color: #fff; }
+    .feat-item p  { font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.65; }
+
+    /* SUBJECTS */
+    .subjects-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .subject-card {
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 16px; padding: 1.2rem 1.4rem;
+      display: flex; align-items: center; gap: 1rem; transition: all .25s; cursor: default;
+    }
+    .subject-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.28); }
+
+    .subj-icon {
+      font-size: 1.6rem; width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.2); border-radius: 12px; flex-shrink: 0;
+    }
+    .subj-name { font-size: 0.9rem; font-weight: 800; color: #fff; }
+    .subj-meta { font-size: 0.75rem; color: rgba(255,255,255,0.65); font-weight: 600; }
+
+    /* RANKING */
+    .ranking-section { max-width: 800px; margin: 0 auto; text-align: center; }
+
+    .podium { display: flex; align-items: flex-end; justify-content: center; gap: 1.5rem; margin: 3rem 0; }
+    .podium-item { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+
+    .podium-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; font-weight: 900; border: 3px solid transparent;
+    }
+
+    .podium-block {
+      width: 90px; border-radius: 12px 12px 0 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700;
+    }
+
+    .p-1 .podium-avatar { background: rgba(251,191,36,0.15); border-color: #fbbf24; }
+    .p-1 .podium-block  { height: 110px; background: linear-gradient(180deg, rgba(251,191,36,0.3), rgba(251,191,36,0.1)); color: #fbbf24; }
+
+    .p-2 .podium-avatar { background: rgba(209,213,219,0.1); border-color: #9ca3af; }
+    .p-2 .podium-block  { height: 80px; background: linear-gradient(180deg, rgba(156,163,175,0.25), rgba(156,163,175,0.08)); color: #9ca3af; }
+
+    .p-3 .podium-avatar { background: rgba(180,119,77,0.15); border-color: #cd7f32; }
+    .p-3 .podium-block  { height: 60px; background: linear-gradient(180deg, rgba(180,119,77,0.25), rgba(180,119,77,0.08)); color: #cd7f32; }
+
+    .podium-name { font-size: 0.85rem; font-weight: 800; }
+    .podium-xp   { font-size: 0.75rem; color: var(--muted); font-weight: 700; }
+
+    /* ODS */
+    .ods-section { max-width: 900px; margin: 0 auto; }
+
+    .ods-card {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(95,124,255,0.08));
+      border: 1px solid rgba(34,197,94,0.25); border-radius: 24px; padding: 3rem;
+      display: flex; gap: 2.5rem; align-items: center;
+    }
+
+    .ods-badge {
+      width: 100px; height: 100px; border-radius: 20px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      flex-shrink: 0; box-shadow: 0 8px 30px rgba(34,197,94,0.3);
+    }
+    .ods-badge span:first-child { font-size: 0.7rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+    .ods-badge span:last-child  { font-size: 2.8rem; font-weight: 900; color: #fff; line-height: 1; }
+
+    .ods-text h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem; }
+    .ods-text p  { color: var(--muted); line-height: 1.75; font-size: 0.95rem; }
+
+    /* CTA */
+    .cta-section { text-align: center; max-width: 700px; margin: 0 auto; padding: 6rem 2rem 8rem; }
+    .cta-glow { position: relative; display: inline-block; }
+    .cta-glow::before {
+      content: ''; position: absolute; width: 500px; height: 300px;
+      background: radial-gradient(ellipse, rgba(95,124,255,0.15) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;
+    }
+    .cta-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 1.2rem;
+    }
+    .cta-section p { color: var(--muted); font-size: 1.1rem; line-height: 1.75; margin-bottom: 2.5rem; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 2.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+      background: rgba(13,15,26,0.6);
+    }
+    .foot-logo {
+      font-size: 1.2rem; font-weight: 900;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    footer p { font-size: 0.85rem; color: var(--muted); }
+    .foot-links { display: flex; gap: 1.5rem; }
+    .foot-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: color .2s; }
+    .foot-links a:hover { color: var(--text); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .float-card-1, .float-card-2 { display: none; }
+      .ods-card { flex-direction: column; text-align: center; }
+      footer { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .preview-options { grid-template-columns: 1fr; }
+      .subjects-showcase { grid-template-columns: 1fr; }
+      .stats-strip { gap: 1.5rem; }
+      .stat-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">Edu<span>Quiz</span></div>
+    <ul class="nav-links">
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#materias">Matérias</a></li>
+      <li><a href="#ranking">Ranking</a></li>
+    </ul>
+    <a href="login/login.html" class="nav-cta">Começar grátis ✨</a>
+  </nav>
+
+  <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="hero-badge">
+      <span>🤖</span> Powered by Google Gemini AI
+    </div>
+
+    <h1>
+      Aprenda mais rápido<br>
+      <span class="line-accent">com o poder da IA</span>
+    </h1>
+
+    <p class="hero-desc">
+      O EduQuiz usa Inteligência Artificial para gerar questões personalizadas de todas as matérias do currículo escolar brasileiro — do Ensino Fundamental ao Médio. Aprenda, erre, entenda e evolua!
+    </p>
+
+    <div class="hero-actions">
+      <a href="login/login.html" class="btn-lg btn-primary-lg">
+        🚀 Começar agora — É grátis!
+      </a>
+      <a href="#como-funciona" class="btn-lg btn-ghost-lg">
+        Ver como funciona
+      </a>
+    </div>
+
+    <div class="hero-preview">
+      <div class="preview-card">
+        <div class="preview-top">
+          <div class="preview-pill">📖 Língua Portuguesa · Verbos</div>
+          <div class="preview-score">350<span>pontos</span></div>
+        </div>
+        <div class="preview-progress"><div class="preview-progress-fill"></div></div>
+        <p class="preview-question">
+          Qual é o verbo na frase: <em>"O aluno estudou muito para a prova"</em>?
+        </p>
+        <div class="preview-options">
+          <div class="preview-opt"><div class="preview-opt-letter">A</div> aluno</div>
+          <div class="preview-opt correct"><div class="preview-opt-letter">B</div> estudou ✓</div>
+          <div class="preview-opt"><div class="preview-opt-letter">C</div> muito</div>
+          <div class="preview-opt"><div class="preview-opt-letter">D</div> prova</div>
+        </div>
+      </div>
+      <div class="float-card float-card-1">
+        <div class="float-icon" style="background:rgba(34,197,94,0.15)">🔥</div>
+        <div><div class="float-val">7 dias</div><div class="float-lbl">sequência de estudos</div></div>
+      </div>
+      <div class="float-card float-card-2">
+        <div class="float-icon" style="background:rgba(251,191,36,0.12)">⭐</div>
+        <div><div class="float-val">+150 pts</div><div class="float-lbl">questão difícil!</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-strip">
+    <div class="stat-item"><div class="stat-val">12+</div><div class="stat-lbl">Matérias cobertas</div></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><div class="stat-val">1–10</div><div class="stat-lbl">Questões por lição</div></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><div class="stat-val">100%</div><div class="stat-lbl">Alinhado à BNCC</div></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><div class="stat-val">3</div><div class="stat-lbl">Níveis de ensino</div></div>
+  </div>
+
+  <section id="como-funciona">
+    <div class="how">
+      <div class="how-header reveal">
+        <div class="section-tag">📋 Simples assim</div>
+        <h2 class="section-h2">Como o EduQuiz funciona?</h2>
+        <p class="section-sub">Em quatro passos você já está aprendendo com perguntas geradas por Inteligência Artificial</p>
+      </div>
+      <div class="steps">
+        <div class="step-card reveal">
+          <div class="step-num">01</div>
+          <div class="step-icon">🎯</div>
+          <h3>Escolha a matéria e tópico</h3>
+          <p>Selecione entre mais de 12 disciplinas do currículo brasileiro e escolha o tópico que quer revisar — do Ensino Fundamental ao Médio.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:.1s">
+          <div class="step-num">02</div>
+          <div class="step-icon">🤖</div>
+          <h3>A IA gera suas questões</h3>
+          <p>O Gemini (IA do Google) cria questões únicas e personalizadas de 1 a 10 por lição, com três níveis de dificuldade: Fácil, Médio e Difícil.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:.2s">
+          <div class="step-num">03</div>
+          <div class="step-icon">💡</div>
+          <h3>Aprenda com as explicações</h3>
+          <p>Após cada resposta, você recebe uma explicação detalhada — independente de acertar ou errar. Entenda o porquê e fixe o conteúdo.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:.3s">
+          <div class="step-num">04</div>
+          <div class="step-icon">📈</div>
+          <h3>Acompanhe seu progresso</h3>
+          <p>Visualize seu histórico, taxa de acertos por matéria e suba no ranking global. Quanto mais você estuda, mais pontos você ganha!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="materias" style="background: rgba(26,30,58,0.25);">
+    <div class="features">
+      <div class="features-grid">
+        <div class="features-left reveal">
+          <div>
+            <div class="section-tag">⚡ Funcionalidades</div>
+            <h2 class="section-h2">Tudo que você precisa<br>para estudar melhor</h2>
+            <p class="section-sub" style="margin-bottom:2rem">Ferramentas pensadas para estudantes brasileiros de 6 a 18 anos, com interface intuitiva e gamificada.</p>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon-wrap" style="background:rgba(95,124,255,0.15)">🤖</div>
+            <div><h4>Questões geradas por IA</h4><p>Nunca a mesma pergunta duas vezes. O Gemini cria questões únicas alinhadas ao currículo BNCC a cada lição.</p></div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon-wrap" style="background:rgba(34,197,94,0.12)">📊</div>
+            <div><h4>Histórico completo de lições</h4><p>Revise todas as questões respondidas, filtre por acertos e erros, e identifique onde precisa melhorar.</p></div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon-wrap" style="background:rgba(251,191,36,0.12)">🏆</div>
+            <div><h4>Ranking global com pódio</h4><p>Compita com outros estudantes, suba de posição e apareça no pódio dos 3 primeiros. Motivação garantida!</p></div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon-wrap" style="background:rgba(167,139,250,0.12)">📦</div>
+            <div><h4>Fallback inteligente</h4><p>Se a IA estiver indisponível, o banco de questões do Firestore garante que você nunca fique sem estudar.</p></div>
+          </div>
+        </div>
+
+        <div class="subjects-showcase reveal" style="transition-delay:.15s">
+          <div class="subject-card"><div class="subj-icon">📖</div><div><div class="subj-name">Língua Portuguesa</div><div class="subj-meta">Fundamental II · Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">➕</div><div><div class="subj-name">Matemática</div><div class="subj-meta">Fund. I · Fund. II · Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">🔬</div><div><div class="subj-name">Ciências</div><div class="subj-meta">Fundamental II</div></div></div>
+          <div class="subject-card"><div class="subj-icon">🌍</div><div><div class="subj-name">Geografia</div><div class="subj-meta">Fundamental II · Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">📜</div><div><div class="subj-name">História</div><div class="subj-meta">Fundamental II · Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">⚛️</div><div><div class="subj-name">Física</div><div class="subj-meta">Ensino Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">🧪</div><div><div class="subj-name">Química</div><div class="subj-meta">Ensino Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">🇬🇧</div><div><div class="subj-name">Inglês</div><div class="subj-meta">Fundamental II · Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">🎨</div><div><div class="subj-name">Artes</div><div class="subj-meta">Fundamental I · II</div></div></div>
+          <div class="subject-card"><div class="subj-icon">🏃</div><div><div class="subj-name">Ed. Física</div><div class="subj-meta">Fundamental I · II</div></div></div>
+          <div class="subject-card"><div class="subj-icon">💭</div><div><div class="subj-name">Filosofia</div><div class="subj-meta">Ensino Médio</div></div></div>
+          <div class="subject-card"><div class="subj-icon">🏛️</div><div><div class="subj-name">Sociologia</div><div class="subj-meta">Ensino Médio</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ranking">
+    <div class="ranking-section reveal">
+      <div class="section-tag">🏆 Gamificação</div>
+      <h2 class="section-h2">Ranking global de estudantes</h2>
+      <p class="section-sub" style="margin:0 auto 1rem">Acumule XP respondendo questões, suba no ranking e conquiste o pódio. Quanto mais difícil a questão, mais pontos você ganha!</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem">
+        <span style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:.35rem .9rem;border-radius:999px;font-size:.8rem;font-weight:800">⭐ Fácil = 50 pts</span>
+        <span style="background:rgba(95,124,255,0.12);border:1px solid rgba(95,124,255,0.3);color:var(--blue);padding:.35rem .9rem;border-radius:999px;font-size:.8rem;font-weight:800">🎯 Médio = 100 pts</span>
+        <span style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:.35rem .9rem;border-radius:999px;font-size:.8rem;font-weight:800">🔥 Difícil = 150 pts</span>
+      </div>
+      <div class="podium">
+        <div class="podium-item p-2">
+          <div class="podium-avatar">M</div>
+          <div class="podium-name">maria@...</div>
+          <div class="podium-xp">4.200 XP</div>
+          <div class="podium-block">2</div>
+        </div>
+        <div class="podium-item p-1">
+          <div class="podium-avatar">J</div>
+          <div class="podium-name">joao@...</div>
+          <div class="podium-xp">6.750 XP</div>
+          <div class="podium-block">1</div>
+        </div>
+        <div class="podium-item p-3">
+          <div class="podium-avatar">A</div>
+          <div class="podium-name">ana@...</div>
+          <div class="podium-xp">3.100 XP</div>
+          <div class="podium-block">3</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:rgba(26,30,58,0.25);padding:4rem 2rem">
+    <div class="ods-section reveal">
+      <div class="ods-card">
+        <div class="ods-badge">
+          <span>ODS</span><span>4</span>
+        </div>
+        <div class="ods-text">
+          <h3>Comprometidos com a Educação de Qualidade</h3>
+          <p>O EduQuiz está alinhado com o <strong>Objetivo de Desenvolvimento Sustentável nº 4 da ONU — Educação de Qualidade</strong>, que busca garantir educação inclusiva, equitativa e de qualidade para todos. Acreditamos que a tecnologia pode democratizar o acesso ao aprendizado e torná-lo mais motivador para estudantes brasileiros de todas as regiões.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-glow">
+      <div class="reveal">
+        <div class="section-tag" style="margin-bottom:1.5rem">🚀 Comece hoje</div>
+        <h2>Pronto para estudar<br>de um jeito diferente?</h2>
+        <p>Crie sua conta gratuitamente, escolha uma matéria e deixe a IA criar sua primeira lição agora mesmo.</p>
+        <a href="login/login.html" class="btn-lg btn-primary-lg" style="display:inline-flex">
+          🎓 Criar conta grátis
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
