@@ -158,7 +158,7 @@ O projeto pode utilizar a aba **Projects** do GitHub, porém é **OBRIGATÓRIO p
 | Responsável | Papel | Tarefa | Início | Prazo | Status |
 |-------------|--------|--------|--------|--------|--------|
 |  Pedro           |   Arquiteto de Dados   | Criação das Regras de Negocio e HomePage | 06/04 | 30/04 | ✔️ |
-|             |        | Implementar Cálculo/Processo Z | 06/04 | 15/04 | ❌ |
+|   Lucas     |    Designer UI/UX    | Criação do Designer do site | 06/04 | 15/04 | ✔️ |
 |             |        | Atualizar DER via Engenharia Reversa | 16/04 | 20/04 | ❌ |
 |             |        | Atualizar Diagrama de Classes | 16/04 | 23/04 | ❌ |
 
