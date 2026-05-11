@@ -4,22 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduLink | Criar Conta</title>
+    <title>EduQuiz — Criar Conta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="cadastro.css">
 </head>
 
 <body>
 
+    <!-- Floating orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Top nav -->
+    <nav>
+        <a href="../index.html" class="nav-logo">Edu<span>Quiz</span></a>
+        <div class="nav-actions">
+            <a href="../login/login.html" class="nav-cta-outline">Fazer login</a>
+        </div>
+    </nav>
+
     <div class="container">
-        <div class="hero">
-            <h1>EduLink 🎓</h1>
-            <h2>Comece sua jornada agora.</h2>
-            <p>Junte-se a milhares de alunos e transforme sua forma de estudar com IA.</p>
+        <div class="hero-side">
+            <div class="hero-badge anim-up">✨ É grátis!</div>
+            <h1 class="anim-up d1">Comece sua<br><span class="line-accent">jornada agora</span></h1>
+            <p class="hero-desc anim-up d2">Junte-se a milhares de alunos e transforme sua forma de estudar com Inteligência Artificial.</p>
+
+            <div class="trust-pills anim-up d3">
+                <div class="trust-pill">🎯 12+ matérias</div>
+                <div class="trust-pill">🤖 IA do Google</div>
+                <div class="trust-pill">🏆 Ranking global</div>
+            </div>
         </div>
 
-        <div class="auth-card">
-            <h2>Criar conta</h2>
-            <p class="subtitle">Preencha os dados abaixo para começar.</p>
+        <div class="auth-card anim-up d4">
+            <div class="card-header">
+                <h2>Criar conta 🎓</h2>
+                <p class="subtitle">Preencha os dados abaixo para começar.</p>
+            </div>
 
             <div class="input-group">
                 <label for="email">E-mail</label>
@@ -31,7 +54,7 @@
                 <input type="password" id="senha" placeholder="Crie uma senha forte" required>
             </div>
 
-            <button onclick="cadastrar()" class="btn-primary">Cadastrar</button>
+            <button onclick="cadastrar()" class="btn-primary">🚀 Cadastrar</button>
 
             <div class="footer-links">
                 <span>Já tem uma conta?</span>

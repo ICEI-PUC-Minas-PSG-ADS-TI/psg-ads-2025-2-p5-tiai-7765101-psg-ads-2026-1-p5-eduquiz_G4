@@ -4,22 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduLink | Login</title>
+    <title>EduQuiz — Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
+    <!-- Floating orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Top nav -->
+    <nav>
+        <a href="../index.html" class="nav-logo">Edu<span>Quiz</span></a>
+        <div class="nav-actions">
+            <a href="../cadastro/cadastro.html" class="nav-cta-outline">Criar conta</a>
+        </div>
+    </nav>
+
     <div class="container">
-        <div class="hero">
-            <h1>EduLink 🎓</h1>
-            <h2>Onde o conhecimento ganha vida.</h2>
-            <p>Plataforma inteligente que utiliza IA para impulsionar seu sucesso escolar.</p>
+        <div class="hero-side">
+            <div class="hero-badge anim-up">🔐 Acesso seguro</div>
+            <h1 class="anim-up d1">Bem-vindo<br><span class="line-accent">de volta!</span></h1>
+            <p class="hero-desc anim-up d2">Entre na sua conta para continuar aprendendo com o poder da Inteligência Artificial.</p>
         </div>
 
-        <div class="login-card">
-            <h2>Bem-vindo(a)! 👋</h2>
-            <p class="subtitle">Faça login para continuar sua jornada.</p>
+        <div class="login-card anim-up d3">
+            <div class="card-header">
+                <h2>Entrar na conta 👋</h2>
+                <p class="subtitle">Insira suas credenciais para acessar o EduQuiz.</p>
+            </div>
 
             <div class="input-group">
                 <label for="email">E-mail</label>
@@ -31,7 +48,7 @@
                 <input type="password" id="senha" placeholder="Sua senha secreta" required>
             </div>
 
-            <button onclick="login()" class="btn-primary">Entrar</button>
+            <button onclick="login()" class="btn-primary">🚀 Entrar</button>
 
             <div class="footer-links">
                 <span>Não tem uma conta?</span>

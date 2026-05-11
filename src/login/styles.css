@@ -1,162 +1,317 @@
+/* ============================================
+   EduQuiz — Login Styles
+   Consistent with Index/Home design system
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --primary-color: #4466ff;
-  --secondary-color: #67ccff;
-  --button-bg: #4466ff;
-  --text-dark: #2d3748;
-  --text-light: #ffffff;
-  --bg-gradient: linear-gradient(135deg, #0044ff 0%, #a2d9ff 100%);
+  --blue:   #5f7cff;
+  --cyan:   #7bd3ff;
+  --purple: #a78bfa;
+  --green:  #22c55e;
+  --yellow: #fbbf24;
+  --red:    #f87171;
+  --dark:   #0d0f1a;
+  --dark2:  #13162b;
+  --dark3:  #1a1e3a;
+  --text:   #1a1a2e;
+  --muted:  #4a5580;
+  --border: rgba(95,124,255,0.2);
+  --bg-grad: linear-gradient(135deg, #5f7cff, #7bd3ff);
 }
+
+html { scroll-behavior: smooth; }
 
 body {
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  margin: 0;
-  background: var(--bg-gradient);
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-dark);
-}
-
-.container {
-  width: 1000px;
-  display: flex;
-  gap: 80px;
-  align-items: center;
-  padding: 20px;
-}
-
-.hero {
-  color: white;
-  width: 50%;
-}
-
-.hero h1 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.hero h2 {
-  font-size: 48px;
-  margin-top: 0;
-  line-height: 1.2;
-}
-
-.hero p {
-  font-size: 18px;
-  opacity: 0.9;
-  line-height: 1.6;
-}
-
-.login-card {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 50px 40px;
-  border-radius: 28px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  width: 380px;
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg-grad);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-card h2 {
-  margin: 0;
-  font-size: 26px;
-  color: #1a202c;
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ============ FLOATING ORBS ============ */
+.orb {
+  position: fixed; border-radius: 50%; filter: blur(80px);
+  pointer-events: none; animation: float 8s ease-in-out infinite;
+  z-index: 0;
+}
+.orb-1 { width: 400px; height: 400px; background: rgba(255,255,255,0.15); top: 10%; left: -10%; }
+.orb-2 { width: 300px; height: 300px; background: rgba(123,211,255,0.25); top: 20%; right: -5%; animation-delay: 3s; }
+.orb-3 { width: 250px; height: 250px; background: rgba(95,124,255,0.2); bottom: 20%; left: 20%; animation-delay: 1.5s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-30px); }
+}
+
+/* ============ NAV ============ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 3rem;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.35);
+}
+
+.nav-logo {
+  font-size: 1.5rem; font-weight: 900;
+  color: #fff; text-decoration: none;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.nav-logo span { color: rgba(255,255,255,0.65); }
+
+.nav-actions { display: flex; align-items: center; gap: 0.6rem; }
+
+.nav-cta-outline {
+  background: rgba(255,255,255,0.2); color: #fff; border: 2px solid rgba(255,255,255,0.6);
+  padding: 0.55rem 1.2rem; border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem;
+  cursor: pointer; transition: all .2s; text-decoration: none;
+}
+.nav-cta-outline:hover { background: rgba(255,255,255,0.35); transform: translateY(-1px); }
+
+/* ============ CONTAINER ============ */
+.container {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 1100px;
+  display: flex; gap: 4rem; align-items: center; justify-content: center;
+  padding: 8rem 2rem 4rem;
+  min-height: 100vh;
+}
+
+/* ============ HERO SIDE ============ */
+.hero-side {
+  flex: 1; max-width: 480px;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.5);
+  color: #fff; padding: 0.4rem 1rem; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.hero-side h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 700; line-height: 1.08; letter-spacing: -0.03em;
+  color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+  margin-bottom: 1.2rem;
+}
+
+.line-accent {
+  background: linear-gradient(90deg, #fff, rgba(255,255,255,0.7));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  color: rgba(255,255,255,0.85); line-height: 1.8;
+}
+
+/* ============ LOGIN CARD ============ */
+.login-card {
+  width: 420px; flex-shrink: 0;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(24px);
+  border-radius: 24px;
+  padding: 2.5rem 2.2rem;
+  display: flex; flex-direction: column; gap: 1.4rem;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+  position: relative; overflow: hidden;
+}
+
+/* Subtle inner glow */
+.login-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.card-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem; font-weight: 700; color: #fff;
+  margin-bottom: 0.3rem;
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #718096;
-  margin-top: -10px;
-  margin-bottom: 10px;
+  font-size: 0.88rem; color: rgba(255,255,255,0.7);
+  font-weight: 600;
 }
 
+/* ============ INPUTS ============ */
 .input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: flex; flex-direction: column; gap: 0.45rem;
 }
 
 .input-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #4a5568;
+  font-size: 0.82rem; font-weight: 800; color: rgba(255,255,255,0.8);
+  letter-spacing: .02em; text-transform: uppercase;
 }
 
 input {
-  padding: 14px;
+  padding: 0.85rem 1rem;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  font-size: 15px;
-  background: #f7fafc;
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem; font-weight: 600;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(6px);
+}
+
+input::placeholder {
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
 }
 
 input:focus {
   outline: none;
-  border-color: var(--primary-color);
-  background: white;
-  box-shadow: 0 0 0 3px rgba(95, 124, 255, 0.1);
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.2);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.12);
 }
 
+/* ============ BUTTON ============ */
 .btn-primary {
-  background: var(--button-bg);
+  background: rgba(255,255,255,0.95);
+  color: var(--blue);
   border: none;
-  padding: 16px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 12px;
+  padding: 0.9rem 1.5rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem; font-weight: 800;
+  border-radius: 14px;
   cursor: pointer;
-  transition:
-    transform 0.2s,
-    background 0.3s;
-  margin-top: 10px;
+  transition: all .2s;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  margin-top: 0.3rem;
 }
 
 .btn-primary:hover {
-  background: #4138fa;
+  background: #fff;
   transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
 }
 
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* ============ FOOTER LINKS ============ */
 .footer-links {
   text-align: center;
-  font-size: 14px;
-  color: #718096;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 600;
 }
 
 .criar-conta {
-  color: var(--primary-color);
-  font-weight: bold;
+  color: #fff;
+  font-weight: 800;
   text-decoration: none;
-  margin-left: 5px;
+  margin-left: 0.3rem;
+  position: relative;
+  transition: color .2s;
 }
 
-.criar-conta:hover {
-  text-decoration: underline;
+.criar-conta::after {
+  content: '';
+  position: absolute; left: 0; bottom: -2px;
+  width: 0; height: 2px;
+  background: #fff;
+  transition: width .25s ease;
 }
 
+.criar-conta:hover::after {
+  width: 100%;
+}
+
+/* ============ ERROR ============ */
 #erro {
-  color: #e53e3e;
+  color: #fca5a5;
   text-align: center;
-  font-size: 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
   min-height: 20px;
+  background: rgba(248,113,113,0.1);
+  border-radius: 10px;
+  padding: 0;
+  transition: all .3s;
 }
 
+#erro:empty {
+  background: transparent;
+  padding: 0;
+}
+
+#erro:not(:empty) {
+  padding: 0.6rem 1rem;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-up       { animation: fadeUp 0.6s ease both; }
+.anim-up.d1    { animation-delay: 0.1s; }
+.anim-up.d2    { animation-delay: 0.2s; }
+.anim-up.d3    { animation-delay: 0.3s; }
+
+/* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+
   .container {
     flex-direction: column;
-    width: 100%;
-    gap: 40px;
+    padding: 7rem 1.5rem 3rem;
+    gap: 2.5rem;
+    min-height: auto;
   }
-  .hero {
-    width: 90%;
+
+  .hero-side {
+    max-width: 100%;
     text-align: center;
   }
+
+  .hero-badge { margin: 0 auto 1.5rem; }
+
   .login-card {
-    width: 85%;
-    padding: 30px;
+    width: 100%;
+    max-width: 440px;
+  }
+}
+
+@media (max-width: 500px) {
+  .login-card {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .hero-side h1 {
+    font-size: 2rem;
   }
 }
