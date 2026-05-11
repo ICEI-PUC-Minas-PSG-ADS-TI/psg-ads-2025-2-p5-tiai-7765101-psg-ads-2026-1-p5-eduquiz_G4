@@ -305,53 +305,152 @@ O arquivo .sql ou .js deve ser salvo na pasta: src/bd
 ### 4.4.2 Representação do Modelo Físico de Dados (Entrega na Sprint 3 - Core)
 
 
-> **Fundamentação:** Os modelos de dados físicos fornecem detalhes minuciosos que auxiliam administradores e desenvolvedores na implementação da lógica de negócios em um banco de dados real.
-> Eles incluem elementos não especificados no modelo lógico, como:
-> - Tipos de dados específicos da plataforma
-> - Restrições
-> - Índices
-> - Triggers (quando aplicável)
-> - Procedimentos armazenados (quando aplicável)
->
->Por representarem um banco real, devem respeitar:
-> - Convenções de nomenclatura
-> - Restrições da plataforma
-> - Uso adequado de palavras reservadas <br>
+#### 📌 Plataforma Utilizada
 
+O EduQuiz utiliza o **Firebase** como plataforma de backend, composta por:
 
-**Exemplo:**
+| Serviço | Função |
+|---|---|
+| **Firebase Authentication** | Gerenciamento de autenticação de usuários (login/cadastro via e-mail e senha) |
+| **Cloud Firestore** | Banco de dados NoSQL orientado a documentos, utilizado para armazenar todas as coleções do sistema |
+| **API Gemini (Google AI)** | Geração de questões de múltipla escolha via Inteligência Artificial |
 
-<img src="https://d2908q01vomqb2.cloudfront.net/b6692ea5df920cad691c20319a6fffd7a4a766b8/2021/11/09/BDB-1321-image005.png" width="85%">
-
-**FONTE:** <https://aws.amazon.com/pt/compare/the-difference-between-logical-and-physical-data-model/>
-
-<br>O grupo deverá gerar um diagrama físico do banco de dados (estrutura real das tabelas), evidenciando PKs, FKs e relacionamentos, conforme implementado no código.
-
-Este modelo deve exibir:
-- Tabelas ou coleções existentes
-- Atributos com seus respectivos tipos de dados
-- Chaves Primárias (PK)
-- Chaves Estrangeiras (FK)
-- Relacionamentos entre tabelas
-- Restrições implementadas (quando aplicável)
+> ⚠️ **Nota:** Por se tratar de um banco NoSQL (Firestore), o modelo físico é representado por **coleções e documentos** ao invés de tabelas relacionais. Cada coleção equivale a uma "tabela" e cada documento equivale a um "registro", contendo campos com tipos de dados específicos.
 
 ---
 
-### 📌 Requisitos Obrigatórios
+#### 📊 Estrutura das Coleções no Firestore
 
-- O diagrama deve representar fielmente o banco já implementado.
-- Deve refletir exatamente o que foi criado nas Sprints 2 e 3.
-- Não incluir tabelas que não existam no código.
-- Deve contemplar o controle de acesso de usuários, quando implementado.
-- Deve respeitar as convenções e restrições da plataforma utilizada.
+##### 1. Coleção: `users`
+Armazena os dados de perfil de cada usuário registrado no sistema.
+
+| Campo | Tipo | Descrição | Restrição |
+|---|---|---|---|
+| `uid` | `string` | Identificador único do usuário (PK – gerado pelo Firebase Auth) | **PK**, obrigatório, único |
+| `nome` | `string` | Nome completo do usuário | Obrigatório |
+| `email` | `string` | E-mail do usuário | Obrigatório, único |
+| `xp` | `number` | Total de pontos de experiência acumulados | Padrão: `0` |
+| `nivel` | `number` | Nível atual do usuário no sistema | Padrão: `1` |
+| `role` | `string` | Papel do usuário no sistema (`"user"` ou `"admin"`) | Padrão: `"user"` |
+| `dataCriacao` | `timestamp` | Data e hora do registro da conta | Automático |
+
+**Regras de acesso:** Cada usuário pode ler/escrever apenas seu próprio documento. Administradores (`role: "admin"`) possuem acesso ampliado via painel `/admin`.
 
 ---
 
-### 📎 Representação do Modelo Físico de Dados
-🚨 O grupo deverá inserir aqui a imagem do diagrama físico de dados.
+##### 2. Coleção: `progresso`
+Registra o progresso de estudo do usuário em cada matéria e tópico.
+
+| Campo | Tipo | Descrição | Restrição |
+|---|---|---|---|
+| `id` | `string` | Identificador único do documento (PK – gerado automaticamente) | **PK**, obrigatório |
+| `userId` | `string` | Referência ao `uid` do usuário em `users` | **FK → users.uid**, obrigatório |
+| `materia` | `string` | Nome da matéria (ex: "Matemática", "Português") | Obrigatório |
+| `topico` | `string` | Tópico específico dentro da matéria | Obrigatório |
+| `nivelEscolar` | `string` | Nível escolar (ex: "Fundamental I", "Médio") | Obrigatório |
+| `totalAcertos` | `number` | Quantidade total de respostas corretas | Padrão: `0` |
+| `totalQuestoes` | `number` | Quantidade total de questões respondidas | Padrão: `0` |
+| `percentual` | `number` | Percentual de acerto calculado `(totalAcertos / totalQuestoes) × 100` | Calculado |
+| `concluido` | `boolean` | Indica se o tópico foi concluído pelo menos uma vez | Padrão: `false` |
+| `ultimaAtualizacao` | `timestamp` | Data/hora da última atualização | Automático |
 
 ---
-🔧**Ferramentas Sugeridas**
-- MySQL Workbench (engenharia reversa automática)
-- DbDesigner
-- Lucidchart
+
+##### 3. Coleção: `historico`
+Armazena o histórico de todas as lições realizadas pelo usuário, permitindo revisão.
+
+| Campo | Tipo | Descrição | Restrição |
+|---|---|---|---|
+| `id` | `string` | Identificador único do documento (PK) | **PK**, obrigatório |
+| `userId` | `string` | Referência ao `uid` do usuário em `users` | **FK → users.uid**, obrigatório |
+| `materia` | `string` | Matéria da lição realizada | Obrigatório |
+| `topico` | `string` | Tópico da lição | Obrigatório |
+| `nivelEscolar` | `string` | Nível escolar selecionado | Obrigatório |
+| `acertos` | `number` | Quantidade de respostas corretas na lição | Obrigatório |
+| `totalQuestoes` | `number` | Total de questões da lição | Obrigatório |
+| `pontuacao` | `number` | Pontuação obtida na lição (baseada na dificuldade) | Calculado |
+| `questoes` | `array<object>` | Lista de questões respondidas (pergunta, alternativas, resposta do usuário, resposta correta, explicação) | Obrigatório |
+| `data` | `timestamp` | Data/hora da conclusão da lição | Automático |
+
+**Estrutura do objeto dentro do array `questoes`:**
+
+| Subcampo | Tipo | Descrição |
+|---|---|---|
+| `pergunta` | `string` | Texto da pergunta |
+| `alternativas` | `array<string>` | Lista de alternativas |
+| `respostaUsuario` | `string` | Resposta escolhida pelo usuário |
+| `respostaCorreta` | `string` | Resposta correta da questão |
+| `explicacao` | `string` | Explicação educativa gerada pela IA |
+| `acertou` | `boolean` | Se o usuário acertou ou não |
+
+---
+
+##### 4. Coleção: `questoes`
+Banco de questões salvas no Firestore, usado como fallback quando a API Gemini está indisponível (RF-12).
+
+| Campo | Tipo | Descrição | Restrição |
+|---|---|---|---|
+| `id` | `string` | Identificador único do documento (PK) | **PK**, obrigatório |
+| `materia` | `string` | Matéria da questão | Obrigatório |
+| `nivelEscolar` | `string` | Nível escolar | Obrigatório |
+| `topico` | `string` | Tópico específico | Obrigatório |
+| `dificuldade` | `string` | Nível de dificuldade (`"facil"`, `"medio"`, `"dificil"`) | Obrigatório |
+| `pergunta` | `string` | Texto da pergunta | Obrigatório |
+| `alternativas` | `array<string>` | Lista de 4 alternativas | Obrigatório, min: 4 |
+| `respostaCorreta` | `string` | Alternativa correta | Obrigatório |
+| `explicacao` | `string` | Explicação educativa | Obrigatório |
+| `geradaPorIA` | `boolean` | Indica se a questão foi gerada automaticamente pela Gemini | Padrão: `true` |
+| `dataCriacao` | `timestamp` | Data de criação/armazenamento da questão | Automático |
+
+---
+
+##### 5. Firebase Authentication (Controle de Acesso)
+Gerenciado diretamente pelo serviço Firebase Authentication (não é uma coleção Firestore).
+
+| Campo | Tipo | Descrição | Restrição |
+|---|---|---|---|
+| `uid` | `string` | Identificador único do usuário (PK) | **PK**, gerado automaticamente |
+| `email` | `string` | E-mail do usuário | Obrigatório, único |
+| `password` | `string` (hash) | Senha criptografada (gerenciada internamente pelo Firebase) | Obrigatório, min: 6 caracteres |
+| `createdAt` | `timestamp` | Data de criação da conta | Automático |
+| `lastLoginAt` | `timestamp` | Data do último login | Automático |
+
+> 🔒 **Segurança:** As senhas nunca são armazenadas diretamente no Firestore. A autenticação é 100% delegada ao Firebase Authentication (RNF-02, R-05).
+
+---
+
+#### 🔗 Relacionamentos entre Coleções
+
+| Origem | Destino | Tipo | Descrição |
+|---|---|---|---|
+| `progresso.userId` | `users.uid` | N:1 | Cada registro de progresso pertence a um único usuário |
+| `historico.userId` | `users.uid` | N:1 | Cada registro de histórico pertence a um único usuário |
+| `users.uid` | Firebase Auth `uid` | 1:1 | Cada documento de usuário está vinculado a uma conta no Firebase Authentication |
+| `historico.questoes[]` | `questoes` | Referência lógica | As questões respondidas podem ter sido originadas do banco de fallback |
+
+---
+
+#### 📎 Diagrama Físico de Dados
+
+<img width="1126" height="853" alt="WhatsApp Image 2026-05-10 at 23 28 08" src="https://github.com/user-attachments/assets/e7bc7f41-928e-4bb7-9b35-9bba5f08c7c5" />
+
+*Diagrama gerado com base na estrutura real implementada no Firebase Firestore nas Sprints 2 e 3, evidenciando coleções, campos, tipos de dados, identificadores (PK) e referências entre documentos (FK).*
+
+---
+
+#### 🔧 Ferramentas Utilizadas
+
+| Ferramenta | Uso |
+|---|---|
+| **DbDiagram.io / Lucidchart** | Geração do diagrama físico de dados |
+| **Firebase Console** | Validação da estrutura real das coleções |
+
+---
+
+#### ✅ Checklist de Conformidade
+
+- [x] O diagrama representa fielmente o banco implementado no Firebase Firestore.
+- [x] Reflete exatamente as coleções criadas nas Sprints 2 e 3.
+- [x] Não inclui coleções que não existam no código.
+- [x] Contempla o controle de acesso de usuários (Firebase Authentication + campo `role`).
+- [x] Respeita as convenções e restrições da plataforma Firebase/Firestore.
