@@ -160,7 +160,7 @@ O projeto pode utilizar a aba **Projects** do GitHub, porém é **OBRIGATÓRIO p
 |  Pedro           |   Arquiteto de Dados   | Criação das Regras de Negocio e HomePage | 06/04 | 30/04 | ✔️ |
 |   Lucas     |    Designer UI/UX    | Criação do Designer do site | 06/04 | 15/04 | ✔️ |
 |  Felipe          |  Frontend      | Ajuste no CSS das Páginas | 06/04 | 10/05 | ✔️ |
-|             |        | Atualizar Diagrama de Classes | 16/04 | 23/04 | ❌ |
+|  Robson           |  Banco de Dados   | Atualizar Diagrama de Classes | 06/05 | 10/05 | ✔️ |
 
 ---
 
