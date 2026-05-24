@@ -1,153 +1,222 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduQuiz – Histórico</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="historico.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuiz – Histórico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="historico.css">
 </head>
+
 <body>
 
-  <!-- Floating orbs -->
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+    <!-- Floating orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <button class="btn-back" onclick="history.back()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Voltar
-    </button>
-    <div class="topbar-center">
-      <span class="page-icon">📋</span>
-      <span class="page-title">Histórico</span>
-    </div>
-    <div class="user-chip">
-      <div class="avatar" id="avatar">?</div>
-      <span id="userEmail">…</span>
-    </div>
-  </header>
-
-  <main class="main">
-
-    <!-- RESUMO GERAL -->
-    <div class="summary-bar" id="summaryBar">
-      <div class="sum-card">
-        <span class="sum-val" id="sumLicoes">—</span>
-        <span class="sum-lbl">Lições concluídas</span>
-      </div>
-      <div class="sum-divider"></div>
-      <div class="sum-card">
-        <span class="sum-val accent" id="sumAcertos">—</span>
-        <span class="sum-lbl">Total de acertos</span>
-      </div>
-      <div class="sum-divider"></div>
-      <div class="sum-card">
-        <span class="sum-val" id="sumErros">—</span>
-        <span class="sum-lbl">Total de erros</span>
-      </div>
-      <div class="sum-divider"></div>
-      <div class="sum-card">
-        <span class="sum-val accent" id="sumPct">—</span>
-        <span class="sum-lbl">Taxa de acerto</span>
-      </div>
-    </div>
-
-    <!-- FILTROS -->
-    <div class="filters-row">
-      <div class="filter-group">
-        <button class="chip active" data-filter="all">Todas</button>
-        <button class="chip" data-filter="acerto">✓ Acertos</button>
-        <button class="chip" data-filter="erro">✗ Erros</button>
-      </div>
-      <div class="search-wrap">
-        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" class="search-input" id="searchInput" placeholder="Buscar por matéria, tópico ou pergunta…">
-      </div>
-    </div>
-
-    <!-- LISTA DE LIÇÕES -->
-    <div id="licoesWrap">
-
-      <!-- Skeletons -->
-      <div id="skeletons">
-        <div class="skeleton-licao"></div>
-        <div class="skeleton-licao"></div>
-        <div class="skeleton-licao"></div>
-      </div>
-
-      <!-- Estado vazio -->
-      <div class="empty-state hidden" id="emptyState">
-        <div class="empty-icon">📭</div>
-        <h2>Nenhum histórico ainda</h2>
-        <p>Complete algumas lições para ver seu histórico aqui.</p>
-        <button class="btn-primary" onclick="window.location.href='../materias/materias.html'">
-          Estudar agora
-        </button>
-      </div>
-
-      <!-- Lista real -->
-      <div id="licoesList"></div>
-
-    </div>
-
-  </main>
-
-  <!-- MODAL DE REVISÃO DE LIÇÃO -->
-  <div class="modal-overlay hidden" id="modalRevisao">
-    <div class="modal">
-
-      <div class="modal-head">
-        <div class="modal-head-left">
-          <span class="modal-emoji" id="modalEmoji">📚</span>
-          <div>
-            <h2 id="modalTitulo">Revisão da lição</h2>
-            <p class="modal-sub" id="modalSub">Tópico · Data</p>
-          </div>
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="logo">🎓 Edu<span>Quiz</span></div>
+        <div class="topbar-center">
+            <div class="stat-chip">
+                <span class="stat-chip-label">🔥 Sequência</span>
+                <span class="stat-chip-val" id="statSequencia">— dias</span>
+            </div>
+            <div class="stat-chip">
+                <span class="stat-chip-label">🏅 Nível</span>
+                <span class="stat-chip-val" id="statNivel">—</span>
+            </div>
         </div>
-        <button class="modal-close" id="btnFecharModal">✕</button>
-      </div>
-
-      <!-- Score resumo -->
-      <div class="modal-score" id="modalScore">
-        <div class="ms-item ok">
-          <span class="ms-val" id="msAcertos">0</span>
-          <span class="ms-lbl">Acertos</span>
+        <div class="topbar-right">
+            <div class="user-chip">
+                <div class="avatar" id="avatar">?</div>
+                <span id="userEmail">…</span>
+            </div>
+            <button class="btn-logout" id="btnLogout">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Sair
+            </button>
         </div>
-        <div class="ms-sep"></div>
-        <div class="ms-item err">
-          <span class="ms-val" id="msErros">0</span>
-          <span class="ms-lbl">Erros</span>
+    </header>
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <p class="sidebar-label">Navegação</p>
+            <button class="nav-item" onclick="window.location.href='../dashboard/dashboard.html'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                Início
+            </button>
+            <button class="nav-item" onclick="window.location.href='../materias/materias.html'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                Trilhas
+            </button>
+            <button class="nav-item" onclick="window.location.href='../ranking/ranking.html'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="18 20 18 10" />
+                    <polyline points="12 20 12 4" />
+                    <polyline points="6 20 6 14" />
+                </svg>
+                Ranking
+            </button>
+            <button class="nav-item active">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                </svg>
+                Histórico
+            </button>
+            <button class="nav-item" onclick="window.location.href='../admin/admin.html'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                </svg>
+                Perfil
+            </button>
+        </aside>
+
+        <main class="main">
+
+            <!-- RESUMO GERAL -->
+            <div class="summary-bar" id="summaryBar">
+                <div class="sum-card">
+                    <span class="sum-val" id="sumLicoes">—</span>
+                    <span class="sum-lbl">Lições concluídas</span>
+                </div>
+                <div class="sum-divider"></div>
+                <div class="sum-card">
+                    <span class="sum-val accent" id="sumAcertos">—</span>
+                    <span class="sum-lbl">Total de acertos</span>
+                </div>
+                <div class="sum-divider"></div>
+                <div class="sum-card">
+                    <span class="sum-val" id="sumErros">—</span>
+                    <span class="sum-lbl">Total de erros</span>
+                </div>
+                <div class="sum-divider"></div>
+                <div class="sum-card">
+                    <span class="sum-val accent" id="sumPct">—</span>
+                    <span class="sum-lbl">Taxa de acerto</span>
+                </div>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="filters-row">
+                <div class="filter-group">
+                    <button class="chip active" data-filter="all">Todas</button>
+                    <button class="chip" data-filter="acerto">✓ Acertos</button>
+                    <button class="chip" data-filter="erro">✗ Erros</button>
+                </div>
+                <div class="search-wrap">
+                    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                    </svg>
+                    <input type="text" class="search-input" id="searchInput"
+                        placeholder="Buscar por matéria, tópico ou pergunta…">
+                </div>
+            </div>
+
+            <!-- LISTA DE LIÇÕES -->
+            <div id="licoesWrap">
+
+                <!-- Skeletons -->
+                <div id="skeletons">
+                    <div class="skeleton-licao"></div>
+                    <div class="skeleton-licao"></div>
+                    <div class="skeleton-licao"></div>
+                </div>
+
+                <!-- Estado vazio -->
+                <div class="empty-state hidden" id="emptyState">
+                    <div class="empty-icon">📭</div>
+                    <h2>Nenhum histórico ainda</h2>
+                    <p>Complete algumas lições para ver seu histórico aqui.</p>
+                    <button class="btn-primary" onclick="window.location.href='../materias/materias.html'">
+                        Estudar agora
+                    </button>
+                </div>
+
+                <!-- Lista real -->
+                <div id="licoesList"></div>
+
+            </div>
+
+        </main>
+
+    </div><!-- /layout -->
+
+    <!-- MODAL DE REVISÃO DE LIÇÃO -->
+    <div class="modal-overlay hidden" id="modalRevisao">
+        <div class="modal">
+
+            <div class="modal-head">
+                <div class="modal-head-left">
+                    <span class="modal-emoji" id="modalEmoji">📚</span>
+                    <div>
+                        <h2 id="modalTitulo">Revisão da lição</h2>
+                        <p class="modal-sub" id="modalSub">Tópico · Data</p>
+                    </div>
+                </div>
+                <button class="modal-close" id="btnFecharModal">✕</button>
+            </div>
+
+            <!-- Score resumo -->
+            <div class="modal-score" id="modalScore">
+                <div class="ms-item ok">
+                    <span class="ms-val" id="msAcertos">0</span>
+                    <span class="ms-lbl">Acertos</span>
+                </div>
+                <div class="ms-sep"></div>
+                <div class="ms-item err">
+                    <span class="ms-val" id="msErros">0</span>
+                    <span class="ms-lbl">Erros</span>
+                </div>
+                <div class="ms-sep"></div>
+                <div class="ms-item">
+                    <span class="ms-val" id="msPct">0%</span>
+                    <span class="ms-lbl">Aproveitamento</span>
+                </div>
+            </div>
+
+            <!-- Filtro interno do modal -->
+            <div class="modal-filter">
+                <button class="mf-btn active" data-mfilter="all">Todas</button>
+                <button class="mf-btn" data-mfilter="acerto">✓ Acertos</button>
+                <button class="mf-btn" data-mfilter="erro">✗ Erros</button>
+            </div>
+
+            <!-- Loading respostas -->
+            <div class="modal-loading hidden" id="modalLoading">
+                <div class="spin"></div>
+                <span>Carregando respostas…</span>
+            </div>
+
+            <!-- Lista de questões -->
+            <div class="questoes-list" id="questoesList"></div>
+
         </div>
-        <div class="ms-sep"></div>
-        <div class="ms-item">
-          <span class="ms-val" id="msPct">0%</span>
-          <span class="ms-lbl">Aproveitamento</span>
-        </div>
-      </div>
-
-      <!-- Filtro interno do modal -->
-      <div class="modal-filter">
-        <button class="mf-btn active" data-mfilter="all">Todas</button>
-        <button class="mf-btn" data-mfilter="acerto">✓ Acertos</button>
-        <button class="mf-btn" data-mfilter="erro">✗ Erros</button>
-      </div>
-
-      <!-- Loading respostas -->
-      <div class="modal-loading hidden" id="modalLoading">
-        <div class="spin"></div>
-        <span>Carregando respostas…</span>
-      </div>
-
-      <!-- Lista de questões -->
-      <div class="questoes-list" id="questoesList"></div>
-
     </div>
-  </div>
 
-  <script type="module" src="historico.js"></script>
+    <script type="module" src="historico.js"></script>
 </body>
+
 </html>

@@ -5,7 +5,7 @@
 
 import { buscarQuestoes } from "./progresso.js";
 
-const GEMINI_API_KEY = "AIzaSyALU6KzJgpXkrBdg8eDPvqhJYvOBGPt-BQ";
+const GEMINI_API_KEY = "AIzaSyDc0faARl3FoE6JMxZQ8ap3jv5gtRjndgM";
 
 const GEMINI_MODELS = [
   "gemini-2.5-flash",

@@ -1,0 +1,546 @@
+/* conta.css — Modais de Editar Conta e Excluir Conta */
+
+/* ── OVERLAY BASE ── */
+.modal-conta-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 1rem;
+}
+.modal-conta-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── CAIXA DO MODAL ── */
+.modal-conta-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  transform: translateY(24px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-light) transparent;
+}
+.modal-conta-overlay.active .modal-conta-box {
+  transform: translateY(0) scale(1);
+}
+
+/* ── CABEÇALHO DO MODAL ── */
+.modal-conta-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.modal-conta-header-icon {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.modal-conta-header-icon.edit  { background: var(--accent-light); }
+.modal-conta-header-icon.delete { background: rgba(239, 68, 68, 0.12); }
+.modal-conta-header h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+.modal-conta-header p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+.modal-conta-close {
+  position: absolute;
+  top: 1.25rem; right: 1.25rem;
+  background: var(--toggle-btn-bg);
+  border: none; border-radius: 50%;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; cursor: pointer;
+  color: var(--text-on-grad);
+  transition: background 0.2s, transform 0.15s;
+}
+.modal-conta-close:hover {
+  background: var(--toggle-btn-hover);
+  transform: rotate(90deg);
+}
+
+/* ── SEÇÕES ── */
+.conta-section {
+  margin-bottom: 1.5rem;
+}
+.conta-section-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── FOTO DE PERFIL ── */
+.foto-upload-area {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem;
+  background: var(--accent-light);
+  border-radius: 16px;
+  border: 1px dashed var(--accent);
+  transition: background 0.2s;
+}
+.foto-upload-area:hover { background: var(--chip-bg); }
+.foto-preview-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.foto-preview {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--accent);
+  border: 3px solid var(--card-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 900; color: #fff;
+  overflow: hidden;
+}
+.foto-preview img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.foto-edit-badge {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--card-bg);
+  cursor: pointer;
+}
+.foto-upload-info h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+.foto-upload-info p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.btn-foto-upload {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.btn-foto-upload:hover { background: var(--accent-dark); transform: translateY(-1px); }
+#inputFotoHidden { display: none; }
+
+/* ── CAMPOS DE FORMULÁRIO ── */
+.conta-field {
+  margin-bottom: 1rem;
+}
+.conta-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+.conta-field input,
+.conta-field select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.conta-field input:focus,
+.conta-field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(95,124,255,0.15);
+}
+.conta-field select {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+.conta-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+/* ── CAMPO DE SENHA COM OLHO ── */
+.input-senha-wrap {
+  position: relative;
+}
+.input-senha-wrap input { padding-right: 3rem; }
+.btn-toggle-senha {
+  position: absolute;
+  right: 0.75rem; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  color: var(--text-muted);
+  cursor: pointer; font-size: 1.1rem;
+  display: flex; align-items: center;
+  transition: color 0.2s;
+  padding: 0.2rem;
+}
+.btn-toggle-senha:hover { color: var(--accent); }
+
+/* ── FORÇA DA SENHA ── */
+.senha-strength {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.strength-bar {
+  height: 3px;
+  border-radius: 2px;
+  flex: 1;
+  background: var(--border);
+  transition: background 0.3s;
+}
+.strength-bar.ativo-fraca  { background: var(--error); }
+.strength-bar.ativo-media  { background: var(--warn); }
+.strength-bar.ativo-forte  { background: var(--success); }
+.senha-strength-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-top: 4px;
+  height: 16px;
+}
+
+/* ── ESCOLARIDADE GRID ── */
+.escolaridade-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.escolaridade-chip {
+  background: var(--chip-bg);
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 0.55rem 0.3rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.escolaridade-chip:hover { border-color: var(--accent); color: var(--accent); }
+.escolaridade-chip.selected {
+  background: var(--chip-active-bg);
+  color: var(--chip-active-text);
+  border-color: transparent;
+}
+
+/* ── ANO/SÉRIE CHIPS ── */
+.ano-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  min-height: 36px;
+}
+.ano-chip {
+  background: var(--chip-bg);
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  padding: 0.35rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.ano-chip:hover { border-color: var(--accent); color: var(--accent); }
+.ano-chip.selected {
+  background: var(--chip-active-bg);
+  color: var(--chip-active-text);
+}
+
+/* ── ALERTA INFO ── */
+.conta-info-box {
+  background: rgba(95,124,255,0.08);
+  border: 1px solid rgba(95,124,255,0.2);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ── ZONA DE PERIGO ── */
+.zona-perigo-box {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+.zona-perigo-box h4 {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--error);
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.zona-perigo-box p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* ── BOTÕES DE AÇÃO ── */
+.modal-conta-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+.btn-conta-salvar {
+  flex: 1;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+}
+.btn-conta-salvar:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(95,124,255,0.35);
+}
+.btn-conta-salvar:disabled {
+  opacity: 0.6; cursor: not-allowed; transform: none;
+}
+.btn-conta-cancelar {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-conta-cancelar:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.btn-excluir-conta {
+  width: 100%;
+  background: transparent;
+  color: var(--error);
+  border: 1.5px solid rgba(239, 68, 68, 0.35);
+  border-radius: 10px;
+  padding: 0.65rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+}
+.btn-excluir-conta:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--error);
+}
+
+/* ── MODAL EXCLUIR CONTA ── */
+.excluir-warning {
+  text-align: center;
+  padding: 0.5rem 0 1.5rem;
+}
+.excluir-warning-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  animation: pulseWarn 1.5s ease-in-out infinite;
+}
+@keyframes pulseWarn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.excluir-warning h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--error);
+  margin-bottom: 0.5rem;
+}
+.excluir-warning p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 320px;
+  margin: 0 auto 1.25rem;
+}
+.excluir-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 1.25rem;
+  max-width: 280px;
+  text-align: left;
+}
+.excluir-lista li {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.excluir-lista li::before { content: "✗"; color: var(--error); font-weight: 800; }
+.excluir-confirmar-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  display: block;
+  text-align: left;
+}
+.excluir-confirmar-label span {
+  color: var(--error);
+  font-weight: 900;
+}
+.btn-confirmar-excluir {
+  width: 100%;
+  background: var(--error);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.75rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.btn-confirmar-excluir:hover { background: #dc2626; transform: translateY(-1px); }
+.btn-confirmar-excluir:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── TOAST FEEDBACK ── */
+.conta-toast {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  border-radius: 14px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex; align-items: center; gap: 0.5rem;
+  z-index: 20000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  max-width: 90vw;
+}
+.conta-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.conta-toast.success { border-left: 4px solid var(--success); }
+.conta-toast.error   { border-left: 4px solid var(--error); }
+
+/* ── SPINNER ── */
+.btn-spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── DIVISOR ── */
+.conta-divisor {
+  height: 1px;
+  background: var(--border);
+  margin: 1.25rem 0;
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 480px) {
+  .modal-conta-box { padding: 1.5rem 1.25rem; }
+  .escolaridade-grid { grid-template-columns: repeat(2, 1fr); }
+  .conta-field-row { grid-template-columns: 1fr; }
+  .modal-conta-actions { flex-direction: column-reverse; }
+  .btn-conta-cancelar { text-align: center; }
+}

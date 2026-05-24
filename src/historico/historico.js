@@ -1,42 +1,57 @@
-import { auth }                from "../db/firebase.js";
-import { onAuthStateChanged }  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { db }                  from "../db/firebase.js";
+import { auth } from "../db/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { db } from "../db/firebase.js";
 import {
   collection, getDocs, doc, getDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getCatalogo, getRespostasDaLicao } from "../db/progresso.js";
+import { getCatalogo, getRespostasDaLicao, getUserStats } from "../db/progresso.js";
+import { initUserMenu } from "../utils/userMenu.js";
 
+document.getElementById("btnLogout")?.addEventListener("click", async () => {
+  const { signOut } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+  await signOut(auth);
+  window.location.href = "../login/login.html";
+});
 
-let uid             = null;
-let catalogo        = [];
-let todasLicoes     = [];
+let uid = null;
+let catalogo = [];
+let todasLicoes = [];
 let licoesFiltradas = [];
-let filtroAtivo     = "all";
-let buscaAtiva      = "";
-let mfiltroAtivo    = "all";
-let respostas       = [];
-
+let filtroAtivo = "all";
+let buscaAtiva = "";
+let mfiltroAtivo = "all";
+let respostas = [];
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = "../login/login.html"; return; }
   uid = user.uid;
 
-  document.getElementById("avatar").textContent    = user.email[0].toUpperCase();
-  document.getElementById("userEmail").textContent = user.email;
+  // initUserMenu lê Firestore e preenche topbar com nome + foto corretos
+  await initUserMenu(user);
+
+  // Stats
+  try {
+    const s = await getUserStats(uid).catch(() => null);
+    if (s) {
+      document.getElementById("statSequencia").textContent = (s.sequencia ?? 0) + " dias";
+      document.getElementById("statNivel").textContent = s.nivel ?? 1;
+    }
+  } catch (e) {
+    document.getElementById("statSequencia").textContent = "0 dias";
+    document.getElementById("statNivel").textContent = "1";
+  }
 
   catalogo = await getCatalogo().catch(() => []);
   await carregarHistorico();
 
-
   const p = new URLSearchParams(window.location.search);
-  const dlLicao   = p.get("licaoId");
+  const dlLicao = p.get("licaoId");
   const dlMateria = p.get("materiaId");
   if (dlLicao && dlMateria) {
     const licao = todasLicoes.find(l => l.id === dlLicao && l.materiaId === dlMateria);
     if (licao) {
       abrirModalRevisao(licao);
     } else {
-      // Busca direto no Firestore
       try {
         const snap = await getDoc(
           doc(db, "usuarios", uid, "materias", dlMateria, "licoes", dlLicao)
@@ -44,11 +59,11 @@ onAuthStateChanged(auth, async (user) => {
         if (snap.exists()) {
           const mat = catalogo.find(m => m.id === dlMateria);
           abrirModalRevisao({
-            id:           dlLicao,
-            materiaId:    dlMateria,
-            materiaNome:  mat?.nome   ?? dlMateria,
-            materiaEmoji: mat?.emoji  ?? "📚",
-            materiaCor:   mat?.cor    ?? "#5f7cff",
+            id: dlLicao,
+            materiaId: dlMateria,
+            materiaNome: mat?.nome ?? dlMateria,
+            materiaEmoji: mat?.emoji ?? "📚",
+            materiaCor: mat?.cor ?? "#5f7cff",
             ...snap.data(),
           });
         }
@@ -57,7 +72,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Carregar todo o histórico do usuário
 async function carregarHistorico() {
   try {
     todasLicoes = await buscarTodasLicoes(uid);
@@ -71,12 +85,7 @@ async function carregarHistorico() {
   aplicarFiltros();
 }
 
-
-//Percorre TODAS as matérias do catálogo e tenta buscar lições do usuário.
-//Usa o catálogo como fonte de IDs porque o documento pai no Firestore
- 
 async function buscarTodasLicoes(uid) {
-  // Garante que temos o catálogo carregado
   const fonteIds = catalogo.length > 0
     ? catalogo.map(m => m.id)
     : await buscarIdsMateriasDoBD(uid);
@@ -96,17 +105,15 @@ async function buscarTodasLicoes(uid) {
           const data = d.data();
           if (!data.concluida) return;
           todas.push({
-            id:           d.id,
+            id: d.id,
             materiaId,
-            materiaNome:  mat?.nome   ?? materiaId,
-            materiaEmoji: mat?.emoji  ?? "📚",
-            materiaCor:   mat?.cor    ?? "#5f7cff",
+            materiaNome: mat?.nome ?? materiaId,
+            materiaEmoji: mat?.emoji ?? "📚",
+            materiaCor: mat?.cor ?? "#5f7cff",
             ...data,
           });
         });
-      } catch (_) {
-        // matéria sem lições : ignora silenciosamente
-      }
+      } catch (_) { }
     })
   );
 
@@ -117,37 +124,30 @@ async function buscarTodasLicoes(uid) {
   });
 }
 
-
-//Fallback: tenta descobrir IDs de matérias lendo o doc de usuário ou
-//usando uma lista padrão conhecida, quando o catálogo ainda não carregou.
-
 async function buscarIdsMateriasDoBD(uid) {
-  // Tenta ler o documento de usuário que pode ter materias salvas
   try {
     const userSnap = await getDocs(collection(db, "usuarios", uid, "materias"));
     if (!userSnap.empty) return userSnap.docs.map(d => d.id);
-  } catch (_) {}
-  // Última opção: IDs fixos das matérias padrão
+  } catch (_) { }
   return [
-    "portugues","matematica","ciencias","geografia",
-    "historia","fisica","quimica","ingles","artes","ed_fisica","filosofia","sociologia"
+    "portugues", "matematica", "ciencias", "geografia",
+    "historia", "fisica", "quimica", "ingles", "artes", "ed_fisica", "filosofia", "sociologia"
   ];
 }
 
-
 function atualizarResumo() {
   const totalAcertos = todasLicoes.reduce((s, l) => s + (l.acertos ?? 0), 0);
-  const totalQs      = todasLicoes.reduce((s, l) => s + (l.total   ?? 0), 0);
-  const totalErros   = totalQs - totalAcertos;
-  const pct          = totalQs > 0 ? Math.round((totalAcertos / totalQs) * 100) : 0;
+  const totalQs = todasLicoes.reduce((s, l) => s + (l.total ?? 0), 0);
+  const totalErros = totalQs - totalAcertos;
+  const pct = totalQs > 0 ? Math.round((totalAcertos / totalQs) * 100) : 0;
 
-  document.getElementById("sumLicoes").textContent  = todasLicoes.length;
+  document.getElementById("sumLicoes").textContent = todasLicoes.length;
   document.getElementById("sumAcertos").textContent = totalAcertos;
-  document.getElementById("sumErros").textContent   = totalErros;
-  document.getElementById("sumPct").textContent     = pct + "%";
+  document.getElementById("sumErros").textContent = totalErros;
+  document.getElementById("sumPct").textContent = pct + "%";
 }
 
-// Filtros 
+// Filtros
 document.querySelectorAll(".chip").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".chip").forEach(b => b.classList.remove("active"));
@@ -169,8 +169,8 @@ function getPct(l) {
 function aplicarFiltros() {
   licoesFiltradas = todasLicoes.filter(l => {
     const pct = getPct(l);
-    if (filtroAtivo === "acerto" && pct < 70)  return false;
-    if (filtroAtivo === "erro"   && pct >= 70) return false;
+    if (filtroAtivo === "acerto" && pct < 70) return false;
+    if (filtroAtivo === "erro" && pct >= 70) return false;
     if (buscaAtiva) {
       const hay = [l.materiaNome ?? "", l.topico ?? ""].join(" ").toLowerCase();
       if (!hay.includes(buscaAtiva)) return false;
@@ -180,9 +180,8 @@ function aplicarFiltros() {
   renderLicoes();
 }
 
-// Render lista
 function renderLicoes() {
-  const list  = document.getElementById("licoesList");
+  const list = document.getElementById("licoesList");
   const empty = document.getElementById("emptyState");
   list.innerHTML = "";
 
@@ -205,15 +204,15 @@ function getScoreClass(pct) {
 }
 
 function criarLicaoRow(l, delay = 0) {
-  const pct    = getPct(l);
-  const cls    = getScoreClass(pct);
+  const pct = getPct(l);
+  const cls = getScoreClass(pct);
   const tagCls = pct >= 70 ? "ok" : pct >= 40 ? "med" : "err";
   const tagTxt = pct >= 70 ? "✓ Bom resultado" : pct >= 40 ? "~ Regular" : "✗ Para revisar";
 
   const dataStr = l.criadaEm?.toDate
-    ? l.criadaEm.toDate().toLocaleDateString("pt-BR", { day:"2-digit", month:"short", year:"numeric" })
+    ? l.criadaEm.toDate().toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })
     : l.criadaEm?.seconds
-      ? new Date(l.criadaEm.seconds * 1000).toLocaleDateString("pt-BR", { day:"2-digit", month:"short", year:"numeric" })
+      ? new Date(l.criadaEm.seconds * 1000).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })
       : "—";
 
   const row = document.createElement("div");
@@ -243,26 +242,25 @@ function criarLicaoRow(l, delay = 0) {
   return row;
 }
 
-// ─Modal de revisão 
 async function abrirModalRevisao(l) {
   mfiltroAtivo = "all";
-  respostas    = [];
+  respostas = [];
 
-  document.getElementById("modalEmoji").textContent  = l.materiaEmoji ?? "📚";
+  document.getElementById("modalEmoji").textContent = l.materiaEmoji ?? "📚";
   document.getElementById("modalTitulo").textContent = `${l.materiaNome} · ${l.topico ?? "—"}`;
 
   const dataStr = l.criadaEm?.toDate
-    ? l.criadaEm.toDate().toLocaleDateString("pt-BR", { day:"2-digit", month:"long", year:"numeric" })
+    ? l.criadaEm.toDate().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })
     : l.criadaEm?.seconds
-      ? new Date(l.criadaEm.seconds * 1000).toLocaleDateString("pt-BR", { day:"2-digit", month:"long", year:"numeric" })
+      ? new Date(l.criadaEm.seconds * 1000).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })
       : "—";
   document.getElementById("modalSub").textContent = dataStr;
 
-  const pct   = getPct(l);
+  const pct = getPct(l);
   const erros = (l.total ?? 0) - (l.acertos ?? 0);
   document.getElementById("msAcertos").textContent = l.acertos ?? 0;
-  document.getElementById("msErros").textContent   = erros;
-  document.getElementById("msPct").textContent     = pct + "%";
+  document.getElementById("msErros").textContent = erros;
+  document.getElementById("msPct").textContent = pct + "%";
 
   document.querySelectorAll(".mf-btn").forEach(b =>
     b.classList.toggle("active", b.dataset.mfilter === "all")
@@ -301,7 +299,6 @@ document.querySelectorAll(".mf-btn").forEach(btn => {
   });
 });
 
-//Render questões no modal 
 function renderQuestoes() {
   const list = document.getElementById("questoesList");
   list.innerHTML = "";
@@ -309,15 +306,15 @@ function renderQuestoes() {
   if (respostas.length === 0) {
     list.innerHTML = `
       <div class="no-questoes">
-        <p style="font-size:15px;font-weight:700;margin-bottom:8px">Sem respostas detalhadas</p>
-        <p style="font-size:13px">Esta lição foi feita antes do sistema de revisão ser ativado.</p>
+        <p style="font-size:15px;font-weight:700;margin-bottom:8px;color:#1a1a2e">Sem respostas detalhadas</p>
+        <p style="font-size:13px;color:#6b7aaa">Esta lição foi feita antes do sistema de revisão ser ativado.</p>
       </div>`;
     return;
   }
 
   const filtradas = respostas.filter(r => {
     if (mfiltroAtivo === "acerto") return r.acertou === true;
-    if (mfiltroAtivo === "erro")   return r.acertou === false;
+    if (mfiltroAtivo === "erro") return r.acertou === false;
     return true;
   });
 
@@ -326,7 +323,7 @@ function renderQuestoes() {
     return;
   }
 
-  const letras = ["A","B","C","D","E"];
+  const letras = ["A", "B", "C", "D", "E"];
 
   filtradas.forEach((r, i) => {
     const card = document.createElement("div");
@@ -336,19 +333,16 @@ function renderQuestoes() {
     const opcoesHtml = (r.opcoes ?? []).map((op, idx) => {
       const isCorreta = idx === r.correta;
       const isUsuario = idx === r.respostaUsuario;
-      const isErrada  = isUsuario && !isCorreta;
-
-      let cls  = isCorreta ? "opcao-correta" : isErrada ? "opcao-usuario-errada" : "";
+      const isErrada = isUsuario && !isCorreta;
+      let cls = isCorreta ? "opcao-correta" : isErrada ? "opcao-usuario-errada" : "";
       let hint = "";
-
       if (isCorreta && isUsuario) hint = `<span class="opcao-hint ok">✓ Sua resposta (correta)</span>`;
-      else if (isCorreta)         hint = `<span class="opcao-hint ok">✓ Resposta correta</span>`;
-      else if (isErrada)          hint = `<span class="opcao-hint err">✗ Sua resposta</span>`;
-
+      else if (isCorreta) hint = `<span class="opcao-hint ok">✓ Resposta correta</span>`;
+      else if (isErrada) hint = `<span class="opcao-hint err">✗ Sua resposta</span>`;
       return `
         <div class="opcao-item ${cls}">
           <span class="opcao-letra">${letras[idx]}</span>
-          <span class="opcao-texto">${op.replace(/^[A-D]\)\s*/i,"")}${hint}</span>
+          <span class="opcao-texto">${op.replace(/^[A-D]\)\s*/i, "")}${hint}</span>
         </div>`;
     }).join("");
 
@@ -371,7 +365,6 @@ function renderQuestoes() {
           ${r.explicacao}
         </div>` : ""}
     `;
-
     list.appendChild(card);
   });
 }
