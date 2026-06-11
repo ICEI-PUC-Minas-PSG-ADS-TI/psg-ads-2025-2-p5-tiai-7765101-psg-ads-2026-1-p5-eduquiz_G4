@@ -35,37 +35,23 @@
 #### Tela de Matérias (Trilhas de Aprendizado)
 > Grade de matérias organizadas por nível escolar (Fundamental I, Fundamental II, Médio) com barra de progresso percentual de cada disciplina.
 
-![Tela de Matérias](images/sprint2_materias.png)
-
-#### Tela de Lição (Seleção de Tópico)
-> Exibe os tópicos disponíveis para a matéria selecionada, gerados pela IA com base no currículo BNCC. Mostra também o histórico de lições anteriores naquela matéria.
-
-![Tela de Lição](images/sprint2_licao.png)
-
-#### Modal de Configuração da Lição
-> Permite ao usuário escolher quantas questões deseja responder (1 a 10) antes de iniciar.
-
-![Modal de Quantidade](images/sprint2_modal_qtd.png)
+![Tela de Matérias](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Materias.png)
 
 #### Tela do Quiz — Questão
 > Card com o enunciado da questão gerada pela IA, badge de dificuldade (Fácil/Médio/Difícil), barra de progresso e quatro alternativas (A/B/C/D). Pontuação atual exibida na topbar.
 
-![Tela de Questão](images/sprint2_questao.png)
+![Tela de Questão](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Quest%C3%A3o.png)
 
-#### Tela do Quiz — Feedback de Acerto
-> Após responder corretamente, exibe card verde com ícone de acerto e explicação educativa da resposta. Botão "Próxima questão" avança o fluxo.
-
-![Feedback Acerto](images/sprint2_feedback_acerto.png)
-
-#### Tela do Quiz — Feedback de Erro
+#### Tela do Quiz — Feedback
+> Após responder corretamente, exibe card verde com ícone de acerto e explicação educativa da resposta. Botão "Próxima questão" avança o fluxo.]
 > Após responder incorretamente, exibe card vermelho com a resposta correta destacada e explicação do motivo do erro.
 
-![Feedback Erro](images/sprint2_feedback_erro.png)
+![Feedback Acerto](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Acerto.png)
 
 #### Tela de Resultado Final da Lição
 > Exibe o total de acertos, pontuação conquistada em XP e opções para iniciar uma nova lição no mesmo tópico ou voltar para as matérias.
 
-![Resultado da Lição](images/sprint2_resultado.png)
+![Resultado da Lição](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Fim_Quiz.png)
 
 ---
 
@@ -78,22 +64,14 @@
 #### Home Page (Landing Page)
 > Página pública com apresentação do EduQuiz, funcionalidades, matérias cobertas, sistema de pontuação e botões de acesso para login e cadastro.
 
-![Home Page](images/sprint3_homepage.png)
+![Home Page](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/homepage.png)
 
-#### Tela de Histórico — Visão Geral
+#### Tela de Histórico
 > Barra de resumo com total de lições concluídas, acertos, erros e taxa de aproveitamento geral. Lista de lições com indicador circular de desempenho, matéria, tópico e data.
+> Chips de filtro por resultado (Todas / Acertos / Erros) e campo de busca por matéria ou tópico aplicados dinamicamente sobre a lista de lições
 
-![Histórico Geral](images/sprint3_historico.png)
+![Histórico Geral](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Historico.png)
 
-#### Histórico — Filtros e Busca
-> Chips de filtro por resultado (Todas / Acertos / Erros) e campo de busca por matéria ou tópico aplicados dinamicamente sobre a lista de lições.
-
-![Histórico Filtros](images/sprint3_historico_filtros.png)
-
-#### Modal de Revisão da Lição
-> Exibe todas as questões respondidas na lição selecionada, com gabarito destacado em verde (resposta correta) e vermelho (resposta do usuário quando errada), além da explicação de cada questão.
-
-![Modal de Revisão](images/sprint3_modal_revisao.png)
 
 ---
 
@@ -103,7 +81,7 @@
 
 **Descrição:** Tela final que fecha o ciclo de gamificação do EduQuiz. Exibe o pódio visual com os 3 primeiros colocados e um leaderboard completo com todos os usuários, suas posições, avatares e XP acumulado. O XP é calculado com base no total de acertos de todas as lições concluídas em todas as matérias. A posição e XP do usuário logado são destacados no ranking.
 
-#### Tela de Ranking — Pódio
+#### Tela de Ranking
 > Pódio visual com os 3 primeiros colocados (ouro, prata e bronze), exibindo avatar, e-mail e XP de cada um.
 
-![Ranking Pódio](images/sprint4_ranking_podio.png)
+![Ranking Pódio]([images/sprint4_ranking_podio.png](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Ranking.png))
