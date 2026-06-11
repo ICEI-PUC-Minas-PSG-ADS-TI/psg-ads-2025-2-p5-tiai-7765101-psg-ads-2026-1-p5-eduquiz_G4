@@ -27,11 +27,11 @@ Apesar dos resultados alcançados, o grupo reconhece limitações técnicas e de
 
 | # | Limitação |
 |---|-----------|
-| 1 | **Cota da API Gemini:** o plano gratuito possui limite de requisições, o que pode acionar o fallback para o banco de questões com frequência em casos de uso intenso ou simultâneo. |
-| 2 | **Ausência de modo offline:** a plataforma depende inteiramente de conexão com a internet, tanto para a IA quanto para o Firestore. |
-| 3 | **Responsividade parcial:** algumas telas (histórico com modal de revisão, grade de matérias) não foram totalmente otimizadas para telas pequenas. |
-| 4 | **Idioma único:** o sistema foi desenvolvido exclusivamente em português brasileiro, limitando o alcance para escolas bilíngues. |
-| 5 | **Sem perfil de professor ou controle parental:** a plataforma atende apenas ao estudante individual, sem funcionalidades para acompanhamento de turmas. |
+| 1 | Cota da API Gemini: o plano gratuito possui limite de requisições, o que pode acionar o fallback para o banco de questões com frequência em casos de uso intenso ou simultâneo. |
+| 2 | Ausência de modo offline:a plataforma depende inteiramente de conexão com a internet, tanto para a IA quanto para o Firestore. |
+| 3 | Responsividade parcial:algumas telas (histórico com modal de revisão, grade de matérias) não foram totalmente otimizadas para telas pequenas. |
+| 4 | Idioma único: o sistema foi desenvolvido exclusivamente em português brasileiro, limitando o alcance para escolas bilíngues. |
+| 5 | Sem perfil de professor ou controle parental:** a plataforma atende apenas ao estudante individual, sem funcionalidades para acompanhamento de turmas. |
 
 ### Sugestões para a Versão 2.0
 
