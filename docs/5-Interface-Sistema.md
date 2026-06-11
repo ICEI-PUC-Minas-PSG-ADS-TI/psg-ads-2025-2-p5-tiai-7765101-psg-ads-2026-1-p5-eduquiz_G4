@@ -84,4 +84,4 @@
 #### Tela de Ranking
 > Pódio visual com os 3 primeiros colocados (ouro, prata e bronze), exibindo avatar, e-mail e XP de cada um.
 
-![Ranking Pódio]([images/sprint4_ranking_podio.png](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Ranking.png))
+![Ranking Pódio](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/bbf4ef21546898643ceb87fa14213f2e792a4ac4/docs/images/Ranking.png)
