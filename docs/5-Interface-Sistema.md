@@ -17,12 +17,12 @@
 #### Tela de Login
 > Formulário com campos de e-mail e senha, botão "Entrar" e link para a tela de cadastro.
 
-![Tela de Login](images/sprint1_login.png)
+![Tela de Login](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/0e59e3fb86a43393d05153cf67df1756e62c8acc/docs/images/login.png)
 
 #### Tela de Cadastro
 > Formulário de criação de conta com e-mail e senha. Ao confirmar, o usuário é registrado no Firebase e redirecionado para o dashboard.
 
-![Tela de Cadastro](images/sprint1_cadastro.png)
+![Tela de Cadastro](https://github.com/ICEI-PUC-Minas-PSG-ADS-TI/psg-ads-2025-2-p5-tiai-7765101-psg-ads-2026-1-p5-eduquiz_G4/blob/0e59e3fb86a43393d05153cf67df1756e62c8acc/docs/images/cadastro.png)
 
 ---
 
