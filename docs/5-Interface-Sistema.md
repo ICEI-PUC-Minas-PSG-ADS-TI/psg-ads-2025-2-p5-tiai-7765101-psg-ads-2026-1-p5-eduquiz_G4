@@ -1,51 +1,109 @@
-
 # 5. Interface do Sistema
 
-> ⚠️ **Aviso aos Squads:**
-> Diferente da Seção 4 (onde vocês colocaram os wireframes/Mockups), esta seção é o **Portfólio Visual** do software real. Aqui devem constar apenas as capturas de tela (screenshots) do **sistema já codificado e funcionando**.
+> Esta seção é o **Portfólio Visual** do EduQuiz, registrando a evolução real da interface a cada Sprint — do primeiro login até o ranking global.
 
-Esta seção deve ser atualizada a cada Sprint, servindo como um registro histórico da evolução da interface da aplicação web. <br><br>
-
+---
 
 ## 5.1. Galeria de Telas (Por Sprint)
 
-Apresente as imagens reais das telas implementadas, associando-as à funcionalidade (Fatia Vertical) entregue na Sprint correspondente. Descreva brevemente o que cada tela faz.<br><br>
+---
 
-**🟢 Sprint 1: Hello World / Tela Inicial**
-* **Funcionalidade:** Ponto de entrada do sistema e navegação principal.
-* **Descrição:** Tela inicial conectada à API, provando que o fluxo base da aplicação está funcionando.
-* *(Insira a imagem real da tela aqui - ex: `![Tela Home](images/sprint1_home.png)`)* <br><br>
-> 💡 **Importante:** Uma mesma funcionalidade (fatia) pode render **várias telas** (ex: tela de listagem, formulário de cadastro e modal de sucesso). **Coloque prints de todas as etapas do fluxo.** <br><br>
+### 🟢 Sprint 1 — Login e Cadastro
 
-**🟡 Sprint 2: MVP (Primeira Fatia Vertical)**
-* **Funcionalidade:** *(Ex: Cadastro de Cliente e Listagem)*
-* **Descrição:** Formulário interativo que envia os dados para a API e salva com sucesso no Banco de Dados.
-* *(Insira a imagem real da tela aqui - ex: `![Tela Cadastro](images/sprint2_cadastro.png)`)* <br><br>
-> 💡 **Importante:** Uma mesma funcionalidade (fatia) pode render **várias telas** (ex: tela de listagem, formulário de cadastro e modal de sucesso). **Coloque prints de todas as etapas do fluxo.** <br><br>
+**Funcionalidade:** Autenticação de usuários via Firebase Authentication (RF-01 e RF-02).
 
-**🔵 Sprint 3: Core (Regras de Negócio)**
-* **Funcionalidade:** *(Ex: Dashboard de Análise ou Fluxo de Pagamento)*
-* **Descrição:** Interface que demonstra as regras de negócio mais complexas do sistema operando com dados reais do banco.
-* *(Insira a imagem real da tela aqui - ex: `![Tela Core](images/sprint3_core.png)`)* <br><br>
-> 💡 **Importante:** Uma mesma funcionalidade (fatia) pode render **várias telas** (ex: tela de listagem, formulário de cadastro e modal de sucesso). **Coloque prints de todas as etapas do fluxo.** <br><br>
+**Descrição:** Ponto de entrada do sistema. O usuário pode criar uma conta informando e-mail e senha, ou fazer login caso já seja cadastrado. Após autenticação bem-sucedida, é redirecionado automaticamente para o dashboard de matérias. Mensagens de erro são exibidas inline para credenciais inválidas ou e-mail já cadastrado.
 
-**🔴 Sprint 4: Entrega Final**
-* **Funcionalidade:** Polimento visual e telas secundárias.
-* **Descrição:** Telas finais de relatórios, perfis de usuário, tratamento de erros e refinamento de CSS/UX.
-* *(Insira a imagem real da tela aqui - ex: `![Tela Final](images/sprint4_final.png)`)* <br><br>
-> 💡 **Importante:** Uma mesma funcionalidade (fatia) pode render **várias telas** (ex: tela de listagem, formulário de cadastro e modal de sucesso). **Coloque prints de todas as etapas do fluxo.** <br><br>
+#### Tela de Login
+> Formulário com campos de e-mail e senha, botão "Entrar" e link para a tela de cadastro.
 
-> 📸 **Dica:** Certifiquem-se de que as imagens tenham boa resolução e mostrem o sistema rodando no navegador. Salvem todas as imagens na pasta `images/` do repositório.
+![Tela de Login](images/sprint1_login.png)
 
+#### Tela de Cadastro
+> Formulário de criação de conta com e-mail e senha. Ao confirmar, o usuário é registrado no Firebase e redirecionado para o dashboard.
 
+![Tela de Cadastro](images/sprint1_cadastro.png)
 
+---
 
+### 🟡 Sprint 2 — Quiz, Matérias e Respostas
 
+**Funcionalidade:** Fluxo completo de aprendizado — seleção de matéria, geração de lição por IA e resposta de questões com feedback (RF-04, RF-05, RF-06, RF-07, RF-08, RF-12).
 
+**Descrição:** Primeira fatia vertical completa do sistema. O usuário escolhe uma matéria e nível escolar, seleciona um tópico, define a quantidade de questões (1 a 10) e inicia a lição. As questões são geradas em tempo real pela API Gemini. Após cada resposta, o sistema exibe feedback visual (verde = acerto, vermelho = erro) com explicação educativa detalhada. Ao final, a lição é salva no Firestore com acertos, erros e pontuação.
 
+#### Tela de Matérias (Trilhas de Aprendizado)
+> Grade de matérias organizadas por nível escolar (Fundamental I, Fundamental II, Médio) com barra de progresso percentual de cada disciplina.
 
+![Tela de Matérias](images/sprint2_materias.png)
 
+#### Tela de Lição (Seleção de Tópico)
+> Exibe os tópicos disponíveis para a matéria selecionada, gerados pela IA com base no currículo BNCC. Mostra também o histórico de lições anteriores naquela matéria.
 
+![Tela de Lição](images/sprint2_licao.png)
 
+#### Modal de Configuração da Lição
+> Permite ao usuário escolher quantas questões deseja responder (1 a 10) antes de iniciar.
 
+![Modal de Quantidade](images/sprint2_modal_qtd.png)
 
+#### Tela do Quiz — Questão
+> Card com o enunciado da questão gerada pela IA, badge de dificuldade (Fácil/Médio/Difícil), barra de progresso e quatro alternativas (A/B/C/D). Pontuação atual exibida na topbar.
+
+![Tela de Questão](images/sprint2_questao.png)
+
+#### Tela do Quiz — Feedback de Acerto
+> Após responder corretamente, exibe card verde com ícone de acerto e explicação educativa da resposta. Botão "Próxima questão" avança o fluxo.
+
+![Feedback Acerto](images/sprint2_feedback_acerto.png)
+
+#### Tela do Quiz — Feedback de Erro
+> Após responder incorretamente, exibe card vermelho com a resposta correta destacada e explicação do motivo do erro.
+
+![Feedback Erro](images/sprint2_feedback_erro.png)
+
+#### Tela de Resultado Final da Lição
+> Exibe o total de acertos, pontuação conquistada em XP e opções para iniciar uma nova lição no mesmo tópico ou voltar para as matérias.
+
+![Resultado da Lição](images/sprint2_resultado.png)
+
+---
+
+### 🔵 Sprint 3 — Home Page e Histórico
+
+**Funcionalidade:** Landing page do sistema e histórico completo de lições com revisão de questões (RF-10 e RF-11).
+
+**Descrição:** Entrega da interface pública do EduQuiz (home page) e do módulo de histórico — a tela de maior complexidade de regras de negócio do sistema. O histórico percorre todas as matérias do usuário no Firestore, calcula taxa de acertos por lição, permite filtrar por resultado (acerto/erro) e buscar por matéria ou tópico. Ao clicar em uma lição, abre um modal de revisão completa com todas as questões respondidas, gabarito e explicações.
+
+#### Home Page (Landing Page)
+> Página pública com apresentação do EduQuiz, funcionalidades, matérias cobertas, sistema de pontuação e botões de acesso para login e cadastro.
+
+![Home Page](images/sprint3_homepage.png)
+
+#### Tela de Histórico — Visão Geral
+> Barra de resumo com total de lições concluídas, acertos, erros e taxa de aproveitamento geral. Lista de lições com indicador circular de desempenho, matéria, tópico e data.
+
+![Histórico Geral](images/sprint3_historico.png)
+
+#### Histórico — Filtros e Busca
+> Chips de filtro por resultado (Todas / Acertos / Erros) e campo de busca por matéria ou tópico aplicados dinamicamente sobre a lista de lições.
+
+![Histórico Filtros](images/sprint3_historico_filtros.png)
+
+#### Modal de Revisão da Lição
+> Exibe todas as questões respondidas na lição selecionada, com gabarito destacado em verde (resposta correta) e vermelho (resposta do usuário quando errada), além da explicação de cada questão.
+
+![Modal de Revisão](images/sprint3_modal_revisao.png)
+
+---
+
+### 🔴 Sprint 4 — Ranking Global
+
+**Funcionalidade:** Ranking global de usuários ordenados por XP com pódio dos 3 primeiros (RF-09 e RN-05).
+
+**Descrição:** Tela final que fecha o ciclo de gamificação do EduQuiz. Exibe o pódio visual com os 3 primeiros colocados e um leaderboard completo com todos os usuários, suas posições, avatares e XP acumulado. O XP é calculado com base no total de acertos de todas as lições concluídas em todas as matérias. A posição e XP do usuário logado são destacados no ranking.
+
+#### Tela de Ranking — Pódio
+> Pódio visual com os 3 primeiros colocados (ouro, prata e bronze), exibindo avatar, e-mail e XP de cada um.
+
+![Ranking Pódio](images/sprint4_ranking_podio.png)
